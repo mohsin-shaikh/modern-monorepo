@@ -12,7 +12,9 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@workspace/ui": "workspace:*",
+    "@pkg/ui": "workspace:*",
+    "@supabase/ssr": "^0.6.1",
+    "@supabase/supabase-js": "^2.49.4",
     "lucide-react": "^0.475.0",
     "next": "^15.2.3",
     "next-themes": "^0.4.4",
@@ -20,11 +22,11 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
+    "@pkg/eslint-config": "workspace:^",
+    "@pkg/typescript-config": "workspace:*",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@workspace/eslint-config": "workspace:^",
-    "@workspace/typescript-config": "workspace:*",
     "typescript": "^5.7.3"
   }
 }
