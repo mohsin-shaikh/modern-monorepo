@@ -4,7 +4,7 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mohsin-shaikh/zuupee-monorepo.git"
+    "url": "git+https://github.com/mohsin-shaikh/monorepo-starter-template.git"
   },
   "author": {
     "name": "Mohsin Shaikh",

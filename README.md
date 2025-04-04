@@ -1,6 +1,6 @@
-# shadcn/ui monorepo template
+# monorepo starter template
 
-This template is for creating a monorepo with shadcn/ui.
+This starter template is for creating a monorepo with shadcn/ui.
 
 ## Usage
 
