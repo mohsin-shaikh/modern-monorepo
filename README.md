@@ -32,7 +32,7 @@ import { Button } from "@pkg/ui/components/button"
 
 ## Dashboard App
 
-The dashboard app includes a complete authentication system with the following features:
+The dashboard app includes a complete authentication system powered by Supabase Auth with the following features:
 
 - Sign In
 - Sign Up
@@ -45,8 +45,8 @@ To use the authentication features, make sure you have set up your environment v
 
 ```bash
 # Required environment variables for auth
-AUTH_SECRET=your-auth-secret
-NEXTAUTH_URL=http://localhost:3000
+NEXT_PUBLIC_SUPABASE_URL=<SUPABASE_URL>
+NEXT_PUBLIC_SUPABASE_ANON_KEY=<SUPABASE_ANON_KEY>
 ```
 
-The authentication system is built using NextAuth.js and provides a secure, scalable solution for user management.
+The authentication system is built using Supabase Auth and provides a secure, scalable solution for user management with built-in features like social login, magic links, and more.
