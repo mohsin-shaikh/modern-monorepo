@@ -1,7 +1,16 @@
 {
-  "name": "zuupee-monorepo",
+  "name": "monorepo-starter-template",
   "version": "0.0.1",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mohsin-shaikh/zuupee-monorepo.git"
+  },
+  "author": {
+    "name": "Mohsin Shaikh",
+    "email": "mohsinshaikh78601@zgmail.com"
+  },
+  "license": "MIT",
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
