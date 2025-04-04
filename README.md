@@ -29,3 +29,24 @@ To use the components in your app, import them from the `ui` package.
 ```tsx
 import { Button } from "@pkg/ui/components/button"
 ```
+
+## Dashboard App
+
+The dashboard app includes a complete authentication system with the following features:
+
+- Sign In
+- Sign Up
+- Password Reset
+- Email Verification
+- Protected Routes
+- Session Management
+
+To use the authentication features, make sure you have set up your environment variables in the dashboard app's `.env` file.
+
+```bash
+# Required environment variables for auth
+AUTH_SECRET=your-auth-secret
+NEXTAUTH_URL=http://localhost:3000
+```
+
+The authentication system is built using NextAuth.js and provides a secure, scalable solution for user management.
