@@ -1,12 +1,12 @@
 # monorepo starter template
 
-This starter template is for creating a monorepo with shadcn/ui, featuring a web dashboard and API application.
+A modern monorepo template featuring a Next.js dashboard with Supabase authentication and a local Supabase development environment.
 
 ## Project Structure
 
 ### Apps
 - **Dashboard**: Next.js application with Supabase authentication
-- **API**: Express.js backend API service
+- **API**: Local Supabase instance for development
 
 ### Packages
 - **ui**: Shared UI components using shadcn/ui
@@ -15,35 +15,30 @@ This starter template is for creating a monorepo with shadcn/ui, featuring a web
 - **eslint-config**: Shared ESLint configuration
 - **typescript-config**: Shared TypeScript configuration
 
-## Usage
+## Getting Started
 
+### Prerequisites
+- Node.js
+- pnpm
+- Docker (for local Supabase)
+
+### Initial Setup
+
+1. Install dependencies:
 ```bash
-pnpm dlx shadcn@latest init
+pnpm install
 ```
 
-## Adding components
-
-To add components to your app, run the following command at the root of your `web` app:
-
+2. Set up environment variables:
 ```bash
-pnpm dlx shadcn@latest add button -c apps/web
+# Required environment variables for auth
+NEXT_PUBLIC_SUPABASE_URL=<SUPABASE_URL>
+NEXT_PUBLIC_SUPABASE_ANON_KEY=<SUPABASE_ANON_KEY>
 ```
 
-This will place the ui components in the `packages/ui/src/components` directory.
+## Development
 
-## Tailwind
-
-Your `tailwind.config.ts` and `globals.css` are already set up to use the components from the `ui` package.
-
-## Using components
-
-To use the components in your app, import them from the `ui` package.
-
-```tsx
-import { Button } from "@pkg/ui/components/button"
-```
-
-## Dashboard App
+### Dashboard App
 
 The dashboard app includes a complete authentication system powered by Supabase Auth with the following features:
 
@@ -54,32 +49,52 @@ The dashboard app includes a complete authentication system powered by Supabase 
 - Protected Routes
 - Session Management
 
-To use the authentication features, make sure you have set up your environment variables in the dashboard app's `.env` file.
+### Local Supabase Development
 
-```bash
-# Required environment variables for auth
-NEXT_PUBLIC_SUPABASE_URL=<SUPABASE_URL>
-NEXT_PUBLIC_SUPABASE_ANON_KEY=<SUPABASE_ANON_KEY>
-```
+The API app provides a local Supabase instance for development, allowing you to:
+- Run Supabase services locally
+- Develop and test database migrations
+- Test authentication flows
+- Develop and test database functions
+- Work with real-time subscriptions
+- Test storage functionality
 
-The authentication system is built using Supabase Auth and provides a secure, scalable solution for user management with built-in features like social login, magic links, and more.
-
-## API App
-
-The API app is built with Express.js and provides backend services for the dashboard application. It includes:
-
-- RESTful API endpoints
-- Supabase integration
-- Shared logging utilities
-- TypeScript support
-- ESLint configuration
-
-To run the API app, navigate to the API directory and start the development server:
-
+To start the local Supabase instance:
 ```bash
 cd apps/api
 pnpm dev
 ```
+
+This will start all Supabase services locally, including:
+- PostgreSQL database
+- Supabase Auth
+- Storage
+- Edge Functions
+- Real-time subscriptions
+
+## UI Components
+
+### Adding Components
+
+To add components to your app, run the following command at the root of your `web` app:
+
+```bash
+pnpm dlx shadcn@latest add button -c apps/web
+```
+
+This will place the ui components in the `packages/ui/src/components` directory.
+
+### Using Components
+
+To use the components in your app, import them from the `ui` package:
+
+```tsx
+import { Button } from "@pkg/ui/components/button"
+```
+
+### Tailwind Configuration
+
+Your `tailwind.config.ts` and `globals.css` are already set up to use the components from the `ui` package.
 
 ## Shared Packages
 
