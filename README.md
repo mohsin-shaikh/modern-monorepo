@@ -106,3 +106,7 @@ The `logger` package offers consistent logging utilities across all applications
 
 ### ESLint and TypeScript Config
 Shared configurations for ESLint and TypeScript ensure consistent code style and type checking across all packages and applications.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
