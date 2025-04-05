@@ -1,0 +1,29 @@
+{
+  "name": "@pkg/supabase",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "clean": "rm -rf .turbo node_modules",
+    "lint": "biome check .",
+    "format": "biome format --write .",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@pkg/logger": "workspace:*",
+    "@supabase/ssr": "^0.6.1",
+    "server-only": "^0.0.1",
+    "supabase": "^1.226.4"
+  },
+  "devDependencies": {
+    "@supabase/supabase-js": "^2.49.4",
+    "typescript": "^5.5.4"
+  },
+  "exports": {
+    "./server": "./src/clients/server.ts",
+    "./client": "./src/clients/client.ts",
+    "./mutations": "./src/mutations/index.ts",
+    "./middleware": "./src/clients/middleware.ts",
+    "./queries": "./src/queries/index.ts",
+    "./types": "./src/types/index.ts"
+  }
+}

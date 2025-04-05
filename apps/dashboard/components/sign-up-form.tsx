@@ -1,7 +1,7 @@
 'use client'
 
 import { cn } from '@pkg/ui/lib/utils'
-import { createClient } from '@/lib/supabase/client'
+import { createClient } from '@pkg/supabase/client'
 import { Button } from '@pkg/ui/components/button'
 import {
   Card,
