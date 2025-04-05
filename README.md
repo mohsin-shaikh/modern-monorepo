@@ -1,4 +1,4 @@
-# monorepo starter template
+# modern-monorepo
 
 A modern monorepo template featuring a Next.js dashboard with Supabase authentication and a local Supabase development environment.
 

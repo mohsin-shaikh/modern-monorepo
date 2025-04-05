@@ -1,10 +1,10 @@
 {
-  "name": "monorepo-starter-template",
+  "name": "modern-monorepo",
   "version": "0.0.1",
   "private": true,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mohsin-shaikh/monorepo-starter-template.git"
+    "url": "git+https://github.com/mohsin-shaikh/modern-monorepo.git"
   },
   "author": {
     "name": "Mohsin Shaikh",
