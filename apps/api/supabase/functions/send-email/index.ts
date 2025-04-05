@@ -39,9 +39,9 @@ Deno.serve(async (req) => {
       const html = await render(React.createElement(WelcomeEmail));
 
       await resend.emails.send({
-        from: "Create monorepo starter template <onboarding@resend.dev>",
+        from: "Create modern-monorepo <onboarding@resend.dev>",
         to: [user.email],
-        subject: "Welcome to monorepo starter template",
+        subject: "Welcome to modern-monorepo",
         html,
       });
 

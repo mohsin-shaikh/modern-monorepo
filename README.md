@@ -1,6 +1,6 @@
 # modern-monorepo
 
-A modern monorepo template featuring a Next.js dashboard with Supabase authentication and a local Supabase development environment.
+A modern monorepo featuring a Next.js dashboard with Supabase authentication and a local Supabase development environment.
 
 ## Project Structure
 
