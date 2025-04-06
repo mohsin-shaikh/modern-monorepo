@@ -47,7 +47,9 @@ export default async function AppLayout({
             </div>
           </div>
         </header>
+        <main className="flex-1 p-4">
         {children}
+        </main>
       </SidebarInset>
     </SidebarProvider>
   )
