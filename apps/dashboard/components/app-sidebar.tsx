@@ -3,35 +3,30 @@
 import * as React from "react"
 import {
   AudioWaveform,
-  ChevronRightIcon,
+  CircleHelp,
   Command,
+  Database,
+  Folder,
   GalleryVerticalEnd,
+  Gauge,
+  ScrollText,
+  Search,
   Settings2,
-  SquareTerminal,
+  WholeWord,
 } from "lucide-react"
 
 import { NavUser } from "@/components/nav-user"
 import { TeamSwitcher } from "@/components/team-switcher"
 import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@pkg/ui/components/collapsible"
-import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
-  SidebarGroup,
-  SidebarGroupLabel,
   SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarMenuSubButton,
-  SidebarMenuSubItem,
   SidebarRail,
 } from "@pkg/ui/components/sidebar"
+import { NavDocuments } from "./nav-documents"
+import { NavMain } from "./nav-main"
+import { NavSecondary } from "./nav-secondary"
 
 // This is sample data.
 const data = {
@@ -54,30 +49,50 @@ const data = {
   ],
   navMain: [
     {
-      title: "Playground",
-      url: "#",
-      icon: SquareTerminal,
-      isActive: true,
-      items: [
-        {
-          title: "History",
-          url: "#",
-        },
-        {
-          title: "Starred",
-          url: "#",
-        },
-        {
-          title: "Settings",
-          url: "#",
-        },
-      ],
+      title: "Dashboard",
+      url: "/",
+      icon: Gauge,
+      isActive: true
     },
+    {
+      title: "Projects",
+      url: "/projects",
+      icon: Folder,
+    }
+  ],
+  navSecondary: [
     {
       title: "Settings",
       url: "/settings",
       icon: Settings2,
-    }
+    },
+    {
+      title: "Get Help",
+      url: "/help",
+      icon: CircleHelp,
+    },
+    {
+      title: "Search",
+      url: "/search",
+      icon: Search,
+    },
+  ],
+  documents: [
+    {
+      name: "Data Library",
+      url: "#",
+      icon: Database,
+    },
+    {
+      name: "Reports",
+      url: "#",
+      icon: ScrollText,
+    },
+    {
+      name: "Word Assistant",
+      url: "#",
+      icon: WholeWord,
+    },
   ],
 }
 
@@ -96,53 +111,9 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
         <TeamSwitcher teams={data.teams} />
       </SidebarHeader>
       <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>Platform</SidebarGroupLabel>
-          <SidebarMenu>
-            {data.navMain.map((item) => (
-              item.items ? (
-                <Collapsible
-                  key={item.title}
-                  asChild
-                  defaultOpen={item.isActive}
-                  className="group/collapsible"
-                >
-                  <SidebarMenuItem>
-                    <CollapsibleTrigger asChild>
-                      <SidebarMenuButton tooltip={item.title}>
-                        {item.icon && <item.icon />}
-                        <span>{item.title}</span>
-                        <ChevronRightIcon className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-                      </SidebarMenuButton>
-                    </CollapsibleTrigger>
-                    <CollapsibleContent>
-                      <SidebarMenuSub>
-                        {item.items?.map((subItem) => (
-                          <SidebarMenuSubItem key={subItem.title}>
-                            <SidebarMenuSubButton asChild>
-                              <a href={subItem.url}>
-                                <span>{subItem.title}</span>
-                              </a>
-                            </SidebarMenuSubButton>
-                          </SidebarMenuSubItem>
-                        ))}
-                      </SidebarMenuSub>
-                    </CollapsibleContent>
-                  </SidebarMenuItem>
-                </Collapsible>
-              ) : (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton tooltip={item.title} asChild>
-                    <a href={item.url}>
-                      {item.icon && <item.icon />}
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              )
-            ))}
-          </SidebarMenu>
-        </SidebarGroup>
+        <NavMain items={data.navMain} />
+        <NavDocuments items={data.documents} />
+        <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
         {user && <NavUser user={user} />}
