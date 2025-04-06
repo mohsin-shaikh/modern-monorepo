@@ -1,31 +1,38 @@
-export const THEMES = [
+export const DEFAULT_THEMES = [
   {
     name: "Default",
     value: "default",
   },
   {
-    name: "Neutral",
-    value: "neutral",
+    name: "Blue",
+    value: "blue",
   },
   {
-    name: "Stone",
-    value: "stone",
+    name: "Green",
+    value: "green",
   },
   {
-    name: "Zinc",
-    value: "zinc",
-  },
-  {
-    name: "Gray",
-    value: "gray",
-  },
-  {
-    name: "Slate",
-    value: "slate",
-  },
-  {
-    name: "Scaled",
-    value: "scaled",
+    name: "Amber",
+    value: "amber",
   },
 ]
-export type Theme = (typeof THEMES)[number]
+
+export const SCALED_THEMES = [
+  {
+    name: "Default",
+    value: "default-scaled",
+  },
+  {
+    name: "Blue",
+    value: "blue-scaled",
+  },
+]
+
+export const MONO_THEMES = [
+  {
+    name: "Mono",
+    value: "mono-scaled",
+  },
+]
+
+export type Theme = (typeof DEFAULT_THEMES)[number] | (typeof SCALED_THEMES)[number] | (typeof MONO_THEMES)[number]
