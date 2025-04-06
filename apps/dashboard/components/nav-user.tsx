@@ -11,6 +11,7 @@ import {
 
 import { createClient } from "@pkg/supabase/client"
 import { useRouter } from "next/navigation"
+import Link from "next/link"
 import {
   Avatar,
   AvatarFallback,
@@ -97,9 +98,11 @@ export function NavUser({
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <BadgeCheck />
-                Account
+              <DropdownMenuItem asChild>
+                <Link href="/account">
+                  <BadgeCheck />
+                  Account
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <CreditCard />
