@@ -1,4 +1,5 @@
 import { cookies } from "next/headers"
+import { createClient } from "@pkg/supabase/server"
 
 import { AppSidebar } from "@/components/app-sidebar"
 import { ModeSwitcher } from "@/components/mode-switcher"
@@ -19,9 +20,18 @@ export default async function AppLayout({
   const cookieStore = await cookies()
   const defaultOpen = cookieStore.get("sidebar_state")?.value === "true"
 
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  let profile = null
+  if (user) {
+    const { data } = await supabase.from("users").select("*").eq("id", user.id).single()
+    profile = data
+  }
+
   return (
     <SidebarProvider defaultOpen={defaultOpen}>
-      <AppSidebar />
+      <AppSidebar user={profile ? { name: profile.full_name || profile.email, email: profile.email, avatar: profile.avatar_url || "" } : undefined} />
       <SidebarInset>
         <header className="bg-background sticky inset-x-0 top-0 isolate z-10 flex shrink-0 items-center gap-2 border-b">
           <div className="flex h-14 w-full items-center gap-2 px-4">
