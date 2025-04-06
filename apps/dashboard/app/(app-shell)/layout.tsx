@@ -23,15 +23,17 @@ export default async function AppLayout({
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
-  let profile = null
-  if (user) {
-    const { data } = await supabase.from("users").select("*").eq("id", user.id).single()
-    profile = data
-  }
+  console.log({user})
 
   return (
     <SidebarProvider defaultOpen={defaultOpen}>
-      <AppSidebar user={profile ? { name: profile.full_name || profile.email, email: profile.email, avatar: profile.avatar_url || "" } : undefined} />
+      <AppSidebar 
+        user={user ? { 
+          name: user.user_metadata.full_name || user.email, 
+          email: user.email || "", 
+          avatar: user.user_metadata.avatar_url || "" 
+        } : undefined} 
+      />
       <SidebarInset>
         <header className="bg-background sticky inset-x-0 top-0 isolate z-10 flex shrink-0 items-center gap-2 border-b">
           <div className="flex h-14 w-full items-center gap-2 px-4">
