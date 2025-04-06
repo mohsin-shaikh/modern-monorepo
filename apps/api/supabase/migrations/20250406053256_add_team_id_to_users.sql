@@ -1,3 +1,8 @@
+-- Migration: Add team_id to users table
+-- Purpose: Add team_id column to users table and set up appropriate RLS policies
+-- Author: AI Assistant
+-- Date: 2025-04-06
+
 -- Add team_id column to users table
 alter table users
 add column team_id uuid references teams(id) on delete set null;
@@ -9,22 +14,18 @@ create index idx_users_team_id on users(team_id);
 comment on column users.team_id is 'The default team for the user. Can be null if user has no default team.';
 
 -- Update RLS policies to allow team owners and admins to update team_id
-create policy "Team owners and admins can update team_id"
+-- Policy 1: Allow users to update their own team_id if they are a member of the target team
+create policy "Users can update their own team_id"
 on users
 for update using (
-    exists (
-        select 1 from team_members
-        where team_members.team_id = users.team_id
-        and team_members.user_id = auth.uid()
-        and team_members.role in ('owner', 'admin')
-    )
+    auth.uid() = id
 )
 with check (
+    team_id is null or
     exists (
         select 1 from team_members
-        where team_members.team_id = users.team_id
-        and team_members.user_id = auth.uid()
-        and team_members.role in ('owner', 'admin')
+        where team_id = users.team_id
+        and user_id = auth.uid()
     )
 );
 
