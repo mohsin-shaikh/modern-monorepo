@@ -285,6 +285,23 @@ VALUES
     ('b2b54002-8f37-500c-02c3-c9f1c9e9b2e3', 'e1e65bb9-0f48-5bb3-b2c3-c9f1c9e9b2e3', 'UPDATE', 'teams', 'b2b54002-8f37-500c-02c3-c9f1c9e9b2e3', '{"visibility": "public"}'::jsonb),
     ('c3c65113-9f48-611d-13d4-d0f2d0f0c3f4', 'f2f76cc0-1f59-6cc4-c3d4-d0f2d0f0c3f4', 'INSERT', 'team_invitations', 'f6f98446-2f71-944f-46f7-f3f5f3f3f6f7', '{"role": "member"}'::jsonb);
 
+-- Add team for user@example.com
+INSERT INTO teams (id, name, description, visibility, avatar_url, max_members)
+VALUES
+    ('d4d76224-0f59-722e-24e5-e1f3e1f1d4e5', 'Personal Team', 'My personal workspace', 'private', 'https://api.dicebear.com/7.x/identicon/svg?seed=personal', 5)
+ON CONFLICT (id) DO NOTHING;
+
+-- Add team member entry for user@example.com
+INSERT INTO team_members (team_id, user_id, role)
+VALUES
+    ('d4d76224-0f59-722e-24e5-e1f3e1f1d4e5', 'aec53558-767e-4408-b4d6-1c1e6f17ffe5', 'owner')
+ON CONFLICT (team_id, user_id) DO NOTHING;
+
+-- Add team activity log for the creation
+INSERT INTO team_activity_logs (team_id, actor_id, action, target_type, target_id, metadata)
+VALUES
+    ('d4d76224-0f59-722e-24e5-e1f3e1f1d4e5', 'aec53558-767e-4408-b4d6-1c1e6f17ffe5', 'INSERT', 'teams', 'd4d76224-0f59-722e-24e5-e1f3e1f1d4e5', '{"action": "team_created"}'::jsonb);
+
 -- Re-enable user-defined triggers
 alter table team_members enable trigger user;
 alter table team_invitations enable trigger user;
