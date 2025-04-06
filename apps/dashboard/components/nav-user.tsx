@@ -2,8 +2,8 @@
 
 import {
   BadgeCheck,
-  ChevronsUpDown,
   LogOut,
+  MoreVertical,
   Sparkles,
   Users,
 } from "lucide-react"
@@ -67,7 +67,7 @@ export function NavUser({
                 <span className="truncate font-medium">{user.name}</span>
                 <span className="truncate text-xs">{user.email}</span>
               </div>
-              <ChevronsUpDown className="ml-auto size-4" />
+              <MoreVertical className="ml-auto size-4" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
