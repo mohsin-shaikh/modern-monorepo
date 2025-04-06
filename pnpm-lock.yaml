@@ -53,6 +53,9 @@ importers:
       next-themes:
         specifier: ^0.4.4
         version: 0.4.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      nuqs:
+        specifier: ^2.4.1
+        version: 2.4.1(next@15.2.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)
       react:
         specifier: ^19.0.0
         version: 19.0.0
@@ -180,6 +183,9 @@ importers:
       '@radix-ui/react-slot':
         specifier: ^1.1.2
         version: 1.1.2(@types/react@19.0.10)(react@19.0.0)
+      '@radix-ui/react-tabs':
+        specifier: ^1.1.3
+        version: 1.1.3(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@radix-ui/react-tooltip':
         specifier: ^1.1.8
         version: 1.1.8(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -819,6 +825,19 @@ packages:
       react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
     peerDependenciesMeta:
       '@types/react':
+        optional: true
+
+  '@radix-ui/react-tabs@1.1.3':
+    resolution: {integrity: sha512-9mFyI30cuRDImbmFF6O2KUJdgEOsGh9Vmx9x/Dh9tOhL7BngmQPQfwW4aejKm5OHpfWIdmeV6ySyuxoOGjtNng==}
+    peerDependencies:
+      '@types/react': '*'
+      '@types/react-dom': '*'
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+      react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
         optional: true
 
   '@radix-ui/react-tooltip@1.1.8':
@@ -2180,6 +2199,9 @@ packages:
     resolution: {integrity: sha512-oG62iEk+CYt5Xj2YqI5Xi9xWUeZhDI8jjQmC5oThVH5JGCTgIjr7ciJDzC7MBzYd//WvR1OTmP5Q38Q8ShQtVA==}
     engines: {node: '>= 18'}
 
+  mitt@3.0.1:
+    resolution: {integrity: sha512-vKivATfr97l2/QBCYAkXYDbrIWPM2IIKEl7YPhjCvKlG3kE2gm+uBo6nEXK3M5/Ffh/FLpKExzOQ3JJoJGFKBw==}
+
   mkdirp@0.5.6:
     resolution: {integrity: sha512-FP+p8RB8OWpF3YZBCrP5gtADmtXApB5AMLn+vdyA+PyxCjrCs00mjyUozssO33cwDeT3wNGdLxJ5M//YqtHAJw==}
     hasBin: true
@@ -2264,6 +2286,24 @@ packages:
   npm-run-path@4.0.1:
     resolution: {integrity: sha512-S48WzZW777zhNIrn7gxOlISNAqi9ZC/uQFnRdbeIHhZhCA6UqpkOT8T1G7BvfdgP4Er8gF4sUbaS0i7QvIfCWw==}
     engines: {node: '>=8'}
+
+  nuqs@2.4.1:
+    resolution: {integrity: sha512-u6sngTspqDe3jWHtcmqHQg3dl35niizCZAsm5gy7PBlgG2rwl71Dp2QUv5hwBaWKI9qz0wqILZY86TsRxq66SQ==}
+    peerDependencies:
+      '@remix-run/react': '>=2'
+      next: '>=14.2.0'
+      react: '>=18.2.0 || ^19.0.0-0'
+      react-router: ^6 || ^7
+      react-router-dom: ^6 || ^7
+    peerDependenciesMeta:
+      '@remix-run/react':
+        optional: true
+      next:
+        optional: true
+      react-router:
+        optional: true
+      react-router-dom:
+        optional: true
 
   object-assign@4.1.1:
     resolution: {integrity: sha512-rJgTQnkUnH1sFw8yT6VSU3zD3sWmu6sZhIseY8VX+GRu3P6F7Fu+JNDoXfklElbLJSnc3FUQHVe4cU5hj+BcUg==}
@@ -3595,6 +3635,22 @@ snapshots:
       react: 19.0.0
     optionalDependencies:
       '@types/react': 19.0.10
+
+  '@radix-ui/react-tabs@1.1.3(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
+    dependencies:
+      '@radix-ui/primitive': 1.1.1
+      '@radix-ui/react-context': 1.1.1(@types/react@19.0.10)(react@19.0.0)
+      '@radix-ui/react-direction': 1.1.0(@types/react@19.0.10)(react@19.0.0)
+      '@radix-ui/react-id': 1.1.0(@types/react@19.0.10)(react@19.0.0)
+      '@radix-ui/react-presence': 1.1.2(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@radix-ui/react-primitive': 2.0.2(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@radix-ui/react-roving-focus': 1.1.2(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@radix-ui/react-use-controllable-state': 1.1.0(@types/react@19.0.10)(react@19.0.0)
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+    optionalDependencies:
+      '@types/react': 19.0.10
+      '@types/react-dom': 19.0.4(@types/react@19.0.10)
 
   '@radix-ui/react-tooltip@1.1.8(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
     dependencies:
@@ -5164,6 +5220,8 @@ snapshots:
     dependencies:
       minipass: 7.1.2
 
+  mitt@3.0.1: {}
+
   mkdirp@0.5.6:
     dependencies:
       minimist: 1.2.8
@@ -5245,6 +5303,13 @@ snapshots:
   npm-run-path@4.0.1:
     dependencies:
       path-key: 3.1.1
+
+  nuqs@2.4.1(next@15.2.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0):
+    dependencies:
+      mitt: 3.0.1
+      react: 19.0.0
+    optionalDependencies:
+      next: 15.2.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
 
   object-assign@4.1.1: {}
 

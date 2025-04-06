@@ -5,6 +5,7 @@ import { Providers } from '@/components/providers';
 import { ActiveThemeProvider } from '@/components/active-theme';
 import { cookies } from 'next/headers';
 import { cn } from '@pkg/ui/lib/utils';
+import { NuqsAdapter } from 'nuqs/adapters/next';
 
 const fontSans = Geist({
   subsets: ['latin'],
@@ -55,7 +56,9 @@ export default async function RootLayout({
       >
         <Providers>
           <ActiveThemeProvider initialTheme={activeThemeValue}>
-            {children}
+            <NuqsAdapter>
+              {children}
+            </NuqsAdapter>
           </ActiveThemeProvider>
         </Providers>
       </body>
