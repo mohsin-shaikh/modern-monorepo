@@ -6,7 +6,7 @@ create table public.users (
     email text unique not null,
     full_name text,
     avatar_url text,
-    team_id uuid,
+    team_id uuid,  -- Current/active team for the user
     created_at timestamp with time zone default now(),
     updated_at timestamp with time zone default now(),
     constraint fk_auth_user foreign key (id) references auth.users(id) on delete cascade

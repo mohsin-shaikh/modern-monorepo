@@ -249,11 +249,11 @@ VALUES
 ON CONFLICT (id) DO NOTHING;
 
 -- Create sample teams
-INSERT INTO teams (id, name, description, visibility, avatar_url, max_members)
+INSERT INTO teams (id, name, description, avatar_url, max_members)
 VALUES
-    ('a1a43991-7e26-499b-91b2-b8f0b8d8a1d2', 'Engineering Team', 'Core engineering team', 'private', 'https://api.dicebear.com/7.x/identicon/svg?seed=engineering', 10),
-    ('b2b54002-8f37-500c-02c3-c9f1c9e9b2e3', 'Marketing Team', 'Marketing and communications', 'public', 'https://api.dicebear.com/7.x/identicon/svg?seed=marketing', 5),
-    ('c3c65113-9f48-611d-13d4-d0f2d0f0c3f4', 'Design Team', 'Product design and UX', 'private', 'https://api.dicebear.com/7.x/identicon/svg?seed=design', 8);
+    ('a1a43991-7e26-499b-91b2-b8f0b8d8a1d2', 'Engineering Team', 'Core engineering team', 'https://api.dicebear.com/7.x/identicon/svg?seed=engineering', 10),
+    ('b2b54002-8f37-500c-02c3-c9f1c9e9b2e3', 'Marketing Team', 'Marketing and communications', 'https://api.dicebear.com/7.x/identicon/svg?seed=marketing', 5),
+    ('c3c65113-9f48-611d-13d4-d0f2d0f0c3f4', 'Design Team', 'Product design and UX', 'https://api.dicebear.com/7.x/identicon/svg?seed=design', 8);
 
 -- Add team members
 INSERT INTO team_members (team_id, user_id, role)
@@ -279,9 +279,9 @@ VALUES
     ('f6f98446-2f71-944f-46f7-f3f5f3f3f6f7', 'c3c65113-9f48-611d-13d4-d0f2d0f0c3f4', 'f2f76cc0-1f59-6cc4-c3d4-d0f2d0f0c3f4', 'dave@example.com', 'member', 'pending', now() + interval '7 days');
 
 -- Add team for user@example.com
-INSERT INTO teams (id, name, description, visibility, avatar_url, max_members)
+INSERT INTO teams (id, name, description, avatar_url, max_members)
 VALUES
-    ('d4d76224-0f59-722e-24e5-e1f3e1f1d4e5', 'Personal Team', 'My personal workspace', 'private', 'https://api.dicebear.com/7.x/identicon/svg?seed=personal', 5)
+    ('d4d76224-0f59-722e-24e5-e1f3e1f1d4e5', 'Personal Team', 'My personal workspace', 'https://api.dicebear.com/7.x/identicon/svg?seed=personal', 5)
 ON CONFLICT (id) DO NOTHING;
 
 -- Add team member entry for user@example.com

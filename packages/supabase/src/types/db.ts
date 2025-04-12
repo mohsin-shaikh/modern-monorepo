@@ -11,83 +11,45 @@ export type Database = {
     Tables: {
       posts: {
         Row: {
-          content: string
+          content: string | null
           created_at: string
           id: string
+          team_id: string | null
           title: string
           updated_at: string
           user_id: string
         }
         Insert: {
-          content: string
+          content?: string | null
           created_at?: string
           id?: string
+          team_id?: string | null
           title: string
           updated_at?: string
           user_id: string
         }
         Update: {
-          content?: string
+          content?: string | null
           created_at?: string
           id?: string
+          team_id?: string | null
           title?: string
           updated_at?: string
           user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "fk_posts_user"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      team_activity_logs: {
-        Row: {
-          action: string
-          actor_id: string
-          created_at: string
-          id: string
-          metadata: Json | null
-          target_id: string
-          target_type: string
-          team_id: string
-        }
-        Insert: {
-          action: string
-          actor_id: string
-          created_at?: string
-          id?: string
-          metadata?: Json | null
-          target_id: string
-          target_type: string
-          team_id: string
-        }
-        Update: {
-          action?: string
-          actor_id?: string
-          created_at?: string
-          id?: string
-          metadata?: Json | null
-          target_id?: string
-          target_type?: string
-          team_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "team_activity_logs_actor_id_fkey"
-            columns: ["actor_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "team_activity_logs_team_id_fkey"
+            foreignKeyName: "posts_team_id_fkey"
             columns: ["team_id"]
             isOneToOne: false
             referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "posts_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
             referencedColumns: ["id"]
           },
         ]
@@ -102,6 +64,7 @@ export type Database = {
           role: string
           status: string
           team_id: string
+          updated_at: string
         }
         Insert: {
           created_at?: string
@@ -112,6 +75,7 @@ export type Database = {
           role: string
           status?: string
           team_id: string
+          updated_at?: string
         }
         Update: {
           created_at?: string
@@ -122,6 +86,7 @@ export type Database = {
           role?: string
           status?: string
           team_id?: string
+          updated_at?: string
         }
         Relationships: [
           {
@@ -185,7 +150,6 @@ export type Database = {
           max_members: number
           name: string
           updated_at: string
-          visibility: string
         }
         Insert: {
           avatar_url?: string | null
@@ -195,7 +159,6 @@ export type Database = {
           max_members?: number
           name: string
           updated_at?: string
-          visibility?: string
         }
         Update: {
           avatar_url?: string | null
@@ -205,7 +168,6 @@ export type Database = {
           max_members?: number
           name?: string
           updated_at?: string
-          visibility?: string
         }
         Relationships: []
       }
@@ -239,7 +201,7 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "users_team_id_fkey"
+            foreignKeyName: "fk_current_team"
             columns: ["team_id"]
             isOneToOne: false
             referencedRelation: "teams"
@@ -252,79 +214,22 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      accept_team_invitation: {
-        Args: {
-          invitation_id: string
-        }
-        Returns: undefined
-      }
-      bulk_invite_team_members: {
-        Args: {
-          p_team_id: string
-          p_emails: string[]
-          p_role?: string
-        }
-        Returns: {
-          created_at: string
-          expires_at: string
-          id: string
-          invitee_email: string
-          inviter_id: string
-          role: string
-          status: string
-          team_id: string
-        }[]
-      }
-      create_team: {
-        Args: {
-          team_name: string
-          team_description?: string
-          team_visibility?: string
-          team_avatar_url?: string
-          team_max_members?: number
-        }
-        Returns: string
-      }
-      get_team_members: {
-        Args: {
-          p_team_id: string
-        }
-        Returns: {
-          user_id: string
-          email: string
-          full_name: string
-          avatar_url: string
-          role: string
-          joined_at: string
-        }[]
-      }
-      get_user_teams: {
-        Args: {
-          p_user_id?: string
-        }
-        Returns: {
-          team_id: string
-          team_name: string
-          team_description: string
-          team_visibility: string
-          team_avatar_url: string
-          member_role: string
-          member_count: number
-        }[]
-      }
-      transfer_team_ownership: {
-        Args: {
-          p_team_id: string
-          p_new_owner_id: string
-        }
-        Returns: undefined
-      }
-      update_user_team_id: {
+      check_user_team_role: {
         Args: {
           p_user_id: string
           p_team_id: string
+          p_roles: string[]
         }
-        Returns: undefined
+        Returns: boolean
+      }
+      get_user_team_roles: {
+        Args: {
+          p_user_id: string
+        }
+        Returns: {
+          team_id: string
+          role: string
+        }[]
       }
     }
     Enums: {
