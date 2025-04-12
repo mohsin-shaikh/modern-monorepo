@@ -94,10 +94,10 @@ create policy "Teams are viewable by team members"
     for select
     to authenticated
     using (
-        exists (
-            select 1 from team_members
-            where team_members.team_id = id
-            and team_members.user_id = auth.uid()
+        id in (
+            select tm.team_id 
+            from team_members tm
+            where tm.user_id = auth.uid()
         )
     );
 
@@ -114,11 +114,11 @@ create policy "Teams can be updated by team owners and admins"
     for update
     to authenticated
     using (
-        exists (
-            select 1 from team_members
-            where team_members.team_id = id
-            and team_members.user_id = auth.uid()
-            and team_members.role in ('owner', 'admin')
+        id in (
+            select tm.team_id 
+            from team_members tm
+            where tm.user_id = auth.uid()
+            and tm.role in ('owner', 'admin')
         )
     );
 
@@ -128,139 +128,69 @@ create policy "Teams can be deleted by team owners"
     for delete
     to authenticated
     using (
-        exists (
-            select 1 from team_members
-            where team_members.team_id = id
-            and team_members.user_id = auth.uid()
-            and team_members.role = 'owner'
+        id in (
+            select tm.team_id 
+            from team_members tm
+            where tm.user_id = auth.uid()
+            and tm.role = 'owner'
         )
     );
+
+-- Create helper functions for RLS policies
+create or replace function public.check_team_member_access(p_team_id uuid, p_user_id uuid)
+returns boolean
+language sql
+security definer
+set search_path = public
+stable
+as $$
+    select exists (
+        select 1
+        from team_members
+        where team_id = p_team_id
+        and user_id = p_user_id
+        and role in ('owner', 'admin')
+    );
+$$;
 
 -- Create RLS policies for team_members
 
 -- Base policy for team member access
-create policy "Team members base access"
+create policy "Team members can view their own memberships"
     on team_members
     for select
     to authenticated
-    using (
-        -- Users can see their own memberships
-        user_id = auth.uid()
-        or
-        -- Users can see memberships of teams they are a member of
-        team_id in (
-            select tm.team_id 
-            from team_members tm 
-            where tm.user_id = auth.uid()
-        )
-    );
+    using (user_id = auth.uid());
 
--- Insert policy
+-- Additional select policy for team admins/owners using security definer function
+create policy "Team admins and owners can view all team memberships"
+    on team_members
+    for select
+    to authenticated
+    using (check_team_member_access(team_id, auth.uid()));
+
+-- Insert policy using security definer function
 create policy "Team members can be added by team owners and admins"
     on team_members
     for insert
     to authenticated
-    with check (
-        -- Only team owners and admins can add members
-        exists (
-            select 1 from team_members tm
-            where tm.team_id = team_id
-            and tm.user_id = auth.uid()
-            and tm.role in ('owner', 'admin')
-        )
-    );
+    with check (check_team_member_access(team_id, auth.uid()));
 
--- Update policy
+-- Update policy using security definer function
 create policy "Team members can be updated by team owners and admins"
     on team_members
     for update
     to authenticated
-    using (
-        exists (
-            select 1 from team_members tm
-            where tm.team_id = team_id
-            and tm.user_id = auth.uid()
-            and tm.role in ('owner', 'admin')
-        )
-    );
+    using (check_team_member_access(team_id, auth.uid()));
 
--- Delete policy
+-- Delete policy using security definer function
 create policy "Team members can be removed by owners, admins, or themselves"
     on team_members
     for delete
     to authenticated
     using (
-        -- Team owners and admins can remove members
-        exists (
-            select 1 from team_members tm
-            where tm.team_id = team_id
-            and tm.user_id = auth.uid()
-            and tm.role in ('owner', 'admin')
-        )
-        or
-        -- Users can remove themselves
-        user_id = auth.uid()
-    );
-
--- Create RLS policies for team_invitations
-
--- Select policies
-create policy "Team invitations are viewable by team members and invitee"
-    on team_invitations
-    for select
-    to authenticated
-    using (
-        exists (
-            select 1 from team_members
-            where team_members.team_id = team_invitations.team_id
-            and team_members.user_id = auth.uid()
-        )
-        or
-        auth.email() = invitee_email
-    );
-
--- Insert policies
-create policy "Team invitations can be created by team owners and admins"
-    on team_invitations
-    for insert
-    to authenticated
-    with check (
-        exists (
-            select 1 from team_members
-            where team_members.team_id = team_id
-            and team_members.user_id = auth.uid()
-            and team_members.role in ('owner', 'admin')
-        )
-    );
-
--- Update policies
-create policy "Team invitations can be updated by team owners, admins, or invitee"
-    on team_invitations
-    for update
-    to authenticated
-    using (
-        exists (
-            select 1 from team_members
-            where team_members.team_id = team_invitations.team_id
-            and team_members.user_id = auth.uid()
-            and team_members.role in ('owner', 'admin')
-        )
-        or
-        auth.email() = invitee_email
-    );
-
--- Delete policies
-create policy "Team invitations can be deleted by team owners and admins"
-    on team_invitations
-    for delete
-    to authenticated
-    using (
-        exists (
-            select 1 from team_members
-            where team_members.team_id = team_invitations.team_id
-            and team_members.user_id = auth.uid()
-            and team_members.role in ('owner', 'admin')
-        )
+        user_id = auth.uid() 
+        or check_team_member_access(team_id, auth.uid())
     );
 
 -- Add constraint to ensure at least one owner per team
@@ -269,14 +199,20 @@ returns trigger
 language plpgsql
 security definer
 set search_path = public
+stable
 as $$
+declare
+    owner_count integer;
 begin
-    if old.role = 'owner' and not exists (
-        select 1 from team_members
-        where team_id = old.team_id
-        and role = 'owner'
-        and user_id != old.user_id
-    ) then
+    -- Count owners excluding the one being updated/deleted
+    select count(*)
+    into owner_count
+    from team_members
+    where team_id = old.team_id
+    and role = 'owner'
+    and user_id != old.user_id;
+
+    if old.role = 'owner' and owner_count = 0 then
         raise exception 'Cannot remove or update the last owner of a team';
     end if;
     return new;
@@ -287,4 +223,69 @@ create trigger ensure_team_owner_trigger
     before update or delete on team_members
     for each row
     when (old.role = 'owner')
-    execute function ensure_team_owner(); 
+    execute function ensure_team_owner();
+
+-- Create RLS policies for team_invitations
+
+-- Select policies
+create policy "Team invitations are viewable by team members and invitee"
+    on team_invitations
+    for select
+    to authenticated
+    using (
+        -- Invitee can see their invitations
+        auth.email() = invitee_email
+        or
+        -- Team owners and admins can see invitations
+        team_id in (
+            select tm.team_id 
+            from team_members tm
+            where tm.user_id = auth.uid()
+        )
+    );
+
+-- Insert policies
+create policy "Team invitations can be created by team owners and admins"
+    on team_invitations
+    for insert
+    to authenticated
+    with check (
+        team_id in (
+            select tm.team_id 
+            from team_members tm
+            where tm.user_id = auth.uid()
+            and tm.role in ('owner', 'admin')
+        )
+    );
+
+-- Update policies
+create policy "Team invitations can be updated by team owners, admins, or invitee"
+    on team_invitations
+    for update
+    to authenticated
+    using (
+        -- Invitee can update their invitations
+        auth.email() = invitee_email
+        or
+        -- Team owners and admins can update invitations
+        team_id in (
+            select tm.team_id 
+            from team_members tm
+            where tm.user_id = auth.uid()
+            and tm.role in ('owner', 'admin')
+        )
+    );
+
+-- Delete policies
+create policy "Team invitations can be deleted by team owners and admins"
+    on team_invitations
+    for delete
+    to authenticated
+    using (
+        team_id in (
+            select tm.team_id 
+            from team_members tm
+            where tm.user_id = auth.uid()
+            and tm.role in ('owner', 'admin')
+        )
+    ); 

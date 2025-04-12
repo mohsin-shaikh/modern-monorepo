@@ -21,18 +21,13 @@ create trigger users_updated_at
     for each row
     execute function update_updated_at();
 
--- Create RLS policies for users table
-create policy "Users can read their own profile"
-    on public.users
-    for select
-    using (auth.uid() = id);
-
-create policy "Users can update their own profile"
-    on public.users
-    for update
-    using (auth.uid() = id)
-    with check (auth.uid() = id);
-
 -- Create indexes
 create index idx_users_email on users(email);
-create index idx_users_team_id on users(team_id); 
+create index idx_users_team_id on users(team_id);
+
+-- Basic RLS policy for user creation and self-access
+create policy "Users can read and update their own profile"
+    on public.users
+    for all
+    using (auth.uid() = id)
+    with check (auth.uid() = id); 

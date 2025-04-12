@@ -1,6 +1,8 @@
 import { logger } from "@pkg/logger";
 import { createClient } from "@pkg/supabase/server";
 import { Client } from "../types";
+import { PostgrestSingleResponse } from "@supabase/postgrest-js";
+import { Database } from "../types";
 
 export async function getUser() {
   const supabase = await createClient();
@@ -29,14 +31,17 @@ export async function getPosts() {
   }
 }
 
-export async function getUserQuery(supabase: Client, userId: string) {
+export async function getUserQuery(
+  supabase: Client,
+  userId: string
+) {
   return await supabase
     .from("users")
     .select(
       `
       *,
-      team:team_id(*)
-    `,
+      team:teams!team_id(*)
+    `
     )
     .eq("id", userId)
     .single()
@@ -48,15 +53,9 @@ export async function getCurrentUserTeamQuery(supabase: Client) {
     data: { user },
   } = await getUser();
 
-  console.log(user);
-
   if (!user) {
     return;
   }
 
-  const userData = await getUserQuery(supabase, user?.id);
-
-  console.log(userData);
-
-  return userData;
+  return getUserQuery(supabase, user?.id);
 }

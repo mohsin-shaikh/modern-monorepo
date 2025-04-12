@@ -253,7 +253,9 @@ INSERT INTO teams (id, name, description, avatar_url, max_members)
 VALUES
     ('a1a43991-7e26-499b-91b2-b8f0b8d8a1d2', 'Engineering Team', 'Core engineering team', 'https://api.dicebear.com/7.x/identicon/svg?seed=engineering', 10),
     ('b2b54002-8f37-500c-02c3-c9f1c9e9b2e3', 'Marketing Team', 'Marketing and communications', 'https://api.dicebear.com/7.x/identicon/svg?seed=marketing', 5),
-    ('c3c65113-9f48-611d-13d4-d0f2d0f0c3f4', 'Design Team', 'Product design and UX', 'https://api.dicebear.com/7.x/identicon/svg?seed=design', 8);
+    ('c3c65113-9f48-611d-13d4-d0f2d0f0c3f4', 'Design Team', 'Product design and UX', 'https://api.dicebear.com/7.x/identicon/svg?seed=design', 8),
+    ('d4d76224-0f59-722e-24e5-e1f3e1f1d4e5', 'Personal Team', 'My personal workspace', 'https://api.dicebear.com/7.x/identicon/svg?seed=personal', 5)
+ON CONFLICT (id) DO NOTHING;
 
 -- Add team members
 INSERT INTO team_members (team_id, user_id, role)
@@ -269,7 +271,11 @@ VALUES
     
     -- Design Team
     ('c3c65113-9f48-611d-13d4-d0f2d0f0c3f4', 'f2f76cc0-1f59-6cc4-c3d4-d0f2d0f0c3f4', 'owner'),
-    ('c3c65113-9f48-611d-13d4-d0f2d0f0c3f4', 'd0d54aa8-9e37-4aa9-a1b2-b8f0b8d8a1d2', 'admin');
+    ('c3c65113-9f48-611d-13d4-d0f2d0f0c3f4', 'd0d54aa8-9e37-4aa9-a1b2-b8f0b8d8a1d2', 'admin'),
+    
+    -- Personal Team
+    ('d4d76224-0f59-722e-24e5-e1f3e1f1d4e5', 'aec53558-767e-4408-b4d6-1c1e6f17ffe5', 'owner')
+ON CONFLICT (team_id, user_id) DO NOTHING;
 
 -- Add sample team invitations
 INSERT INTO team_invitations (id, team_id, inviter_id, invitee_email, role, status, expires_at)
@@ -278,17 +284,11 @@ VALUES
     ('e5e87335-1f60-833f-35f6-f2f4f2f2e5f6', 'b2b54002-8f37-500c-02c3-c9f1c9e9b2e3', 'e1e65bb9-0f48-5bb3-b2c3-c9f1c9e9b2e3', 'charlie@example.com', 'admin', 'pending', now() + interval '7 days'),
     ('f6f98446-2f71-944f-46f7-f3f5f3f3f6f7', 'c3c65113-9f48-611d-13d4-d0f2d0f0c3f4', 'f2f76cc0-1f59-6cc4-c3d4-d0f2d0f0c3f4', 'dave@example.com', 'member', 'pending', now() + interval '7 days');
 
--- Add team for user@example.com
-INSERT INTO teams (id, name, description, avatar_url, max_members)
-VALUES
-    ('d4d76224-0f59-722e-24e5-e1f3e1f1d4e5', 'Personal Team', 'My personal workspace', 'https://api.dicebear.com/7.x/identicon/svg?seed=personal', 5)
-ON CONFLICT (id) DO NOTHING;
-
--- Add team member entry for user@example.com
-INSERT INTO team_members (team_id, user_id, role)
-VALUES
-    ('d4d76224-0f59-722e-24e5-e1f3e1f1d4e5', 'aec53558-767e-4408-b4d6-1c1e6f17ffe5', 'owner')
-ON CONFLICT (team_id, user_id) DO NOTHING;
+-- Now that all tables and relationships are set up, update the team_id in users table
+UPDATE users SET team_id = 'a1a43991-7e26-499b-91b2-b8f0b8d8a1d2' WHERE id = 'd0d54aa8-9e37-4aa9-a1b2-b8f0b8d8a1d2';
+UPDATE users SET team_id = 'b2b54002-8f37-500c-02c3-c9f1c9e9b2e3' WHERE id = 'e1e65bb9-0f48-5bb3-b2c3-c9f1c9e9b2e3';
+UPDATE users SET team_id = 'c3c65113-9f48-611d-13d4-d0f2d0f0c3f4' WHERE id = 'f2f76cc0-1f59-6cc4-c3d4-d0f2d0f0c3f4';
+UPDATE users SET team_id = 'd4d76224-0f59-722e-24e5-e1f3e1f1d4e5' WHERE id = 'aec53558-767e-4408-b4d6-1c1e6f17ffe5';
 
 -- Re-enable user-defined triggers
 alter table team_members enable trigger user;

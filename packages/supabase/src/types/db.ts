@@ -214,6 +214,13 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      check_team_member_access: {
+        Args: {
+          p_team_id: string
+          p_user_id: string
+        }
+        Returns: boolean
+      }
       check_user_team_role: {
         Args: {
           p_user_id: string
