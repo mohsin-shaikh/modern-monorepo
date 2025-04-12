@@ -1,126 +1,180 @@
 "use client"
 
-import { useTransition } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useCallback, useEffect, useState } from "react"
 import { useQueryState } from "nuqs"
-import { Avatar, AvatarFallback, AvatarImage } from "@pkg/ui/components/avatar"
 import { Button } from "@pkg/ui/components/button"
 import { Input } from "@pkg/ui/components/input"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@pkg/ui/components/card"
+import { getPendingInvitationsAction, cancelTeamInvitationAction } from "@/actions/team-members-action"
+import { useAction } from "next-safe-action/hooks"
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@pkg/ui/components/card"
-import { Search } from "lucide-react"
-import type { PendingInvite } from "../types"
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@pkg/ui/components/dialog"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@pkg/ui/components/select"
+import { inviteTeamMemberAction } from "@/actions/team-members-action"
+import type { TeamInvitation } from "../types"
 
-// Simulated data - replace with actual data fetching
-const mockInvites: PendingInvite[] = [
-  {
-    id: "1",
-    full_name: "Jane Smith",
-    email: "jane@example.com",
-    role: "member",
-    expires_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
-  },
-  // Add more mock data as needed
-]
+interface InviteMemberFormData {
+  email: string
+  role: "admin" | "member"
+}
 
 export function PendingInvitations() {
-  const router = useRouter()
-  const [isPending, startTransition] = useTransition()
-  const [query, setQuery] = useQueryState("query")
+  const [search, setSearch] = useQueryState("search")
+  const [isOpen, setIsOpen] = useState(false)
+  const [formData, setFormData] = useState<InviteMemberFormData>({
+    email: "",
+    role: "member",
+  })
 
-  const handleSearch = (value: string) => {
-    startTransition(() => {
-      setQuery(value)
+  const { execute: getInvitations, result, status } = useAction(getPendingInvitationsAction)
+  const { execute: cancelInvitation } = useAction(cancelTeamInvitationAction)
+  const { execute: inviteMember, status: inviteStatus } = useAction(inviteTeamMemberAction)
+
+  useEffect(() => {
+    // Fetch initial invitations data if no search param
+    if (!search) {
+      getInvitations({ search: "" })
+    }
+  }, [getInvitations, search])
+
+  const handleSearch = useCallback(
+    async (value: string) => {
+      setSearch(value)
+      await getInvitations({ search: value })
+    },
+    [getInvitations, setSearch]
+  )
+
+  const handleInvite = async () => {
+    await inviteMember({
+      invitee_email: formData.email,
+      role: formData.role,
+      revalidatePath: "/settings/members",
     })
+    setIsOpen(false)
+    setFormData({ email: "", role: "member" })
+    await getInvitations({ search: search || "" })
   }
 
-  const handleResendInvite = async (inviteId: string) => {
-    // TODO: Implement resend invite logic
-    console.log("Resending invite:", inviteId)
-  }
-
-  const handleRevokeInvite = async (inviteId: string) => {
-    // TODO: Implement revoke invite logic
-    console.log("Revoking invite:", inviteId)
+  const handleCancel = async (invitationId: string) => {
+    await cancelInvitation({
+      invitationId,
+      revalidatePath: "/settings/members",
+    })
+    await getInvitations({ search: search || "" })
   }
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Search invitations..."
-            className="pl-8"
-            value={query ?? ""}
-            onChange={(e) => handleSearch(e.target.value)}
-          />
-        </div>
-        <Button>Invite Member</Button>
-      </div>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Pending Invitations</CardTitle>
-          <CardDescription>
-            Manage your pending team invitations.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {mockInvites.map((invite) => (
-              <div
-                key={invite.id}
-                className="flex items-center justify-between p-4 border rounded-lg"
-              >
-                <div className="flex items-center space-x-4">
-                  <Avatar>
-                    <AvatarFallback>
-                      {invite.full_name
-                        .split(" ")
-                        .map((n) => n[0])
-                        .join("")}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <div className="font-medium">{invite.full_name}</div>
-                    <div className="text-sm text-muted-foreground">
-                      {invite.email}
-                    </div>
-                    <div className="text-sm text-muted-foreground">
-                      Role: {invite.role.charAt(0).toUpperCase() + invite.role.slice(1)}
-                    </div>
-                    <div className="text-sm text-muted-foreground">
-                      Expires: {new Date(invite.expires_at).toLocaleDateString()}
-                    </div>
+    <Card>
+      <CardHeader>
+        <CardTitle>Pending Invitations</CardTitle>
+        <CardDescription>
+          Manage your pending team invitations.
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          <div className="flex items-center justify-between gap-2">
+            <Input
+              placeholder="Search invitations..."
+              value={search || ""}
+              onChange={(e) => handleSearch(e.target.value)}
+              className="max-w-sm"
+            />
+            <Dialog open={isOpen} onOpenChange={setIsOpen}>
+              <DialogTrigger asChild>
+                <Button>Invite Member</Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Invite Team Member</DialogTitle>
+                  <DialogDescription>
+                    Send an invitation to join your team.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-4 py-4">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Email</label>
+                    <Input
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      placeholder="Enter email address"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Role</label>
+                    <Select
+                      value={formData.role}
+                      onValueChange={(value: "admin" | "member") =>
+                        setFormData({ ...formData, role: value })
+                      }
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="admin">Admin</SelectItem>
+                        <SelectItem value="member">Member</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
                 </div>
-                <div className="flex space-x-2">
+                <DialogFooter>
                   <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleResendInvite(invite.id)}
+                    onClick={handleInvite}
+                    disabled={inviteStatus === "executing"}
                   >
-                    Resend
+                    {inviteStatus === "executing" ? "Sending..." : "Send Invitation"}
                   </Button>
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    onClick={() => handleRevokeInvite(invite.id)}
-                  >
-                    Revoke
-                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+          </div>
+
+          <div className="space-y-4">
+            {status === "executing" && (
+              <div className="text-sm text-muted-foreground">Loading...</div>
+            )}
+
+            {result?.data && result.data.length === 0 && (
+              <div className="text-sm text-muted-foreground">No pending invitations</div>
+            )}
+
+            {result?.data && (result.data as TeamInvitation[]).map((invitation) => (
+              <div
+                key={invitation.id}
+                className="flex items-center justify-between rounded-lg border p-4"
+              >
+                <div>
+                  <div className="font-medium">{invitation.invitee_email}</div>
+                  <div className="text-sm text-muted-foreground capitalize">
+                    Role: {invitation.role}
+                  </div>
                 </div>
+                <Button
+                  variant="outline"
+                  onClick={() => handleCancel(invitation.id)}
+                >
+                  Cancel Invitation
+                </Button>
               </div>
             ))}
           </div>
-        </CardContent>
-      </Card>
-    </div>
+        </div>
+      </CardContent>
+    </Card>
   )
 } 

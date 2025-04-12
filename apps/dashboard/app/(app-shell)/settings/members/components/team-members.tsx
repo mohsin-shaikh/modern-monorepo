@@ -1,6 +1,6 @@
 "use client"
 
-import { useTransition } from "react"
+import { useCallback, useEffect } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useQueryState } from "nuqs"
 import { Avatar, AvatarFallback, AvatarImage } from "@pkg/ui/components/avatar"
@@ -13,99 +13,88 @@ import {
   CardHeader,
   CardTitle,
 } from "@pkg/ui/components/card"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@pkg/ui/components/select"
-import { Search } from "lucide-react"
+import { getTeamMembersAction } from "@/actions/team-members-action"
+import { useAction } from "next-safe-action/hooks"
 import type { TeamMember } from "../types"
 
-// Simulated data - replace with actual data fetching
-const mockMembers: TeamMember[] = [
-  {
-    id: "1",
-    full_name: "John Doe",
-    email: "john@example.com",
-    role: "owner",
-    avatar_url: "/placeholder-avatar.png",
-  },
-  // Add more mock data as needed
-]
-
 export function TeamMembers() {
-  const router = useRouter()
-  const [isPending, startTransition] = useTransition()
-  const [query, setQuery] = useQueryState("query")
+  const [search, setSearch] = useQueryState("search")
+  const { execute: getMembers, result, status } = useAction(getTeamMembersAction)
 
-  const handleSearch = (value: string) => {
-    startTransition(() => {
-      setQuery(value)
-    })
-  }
+  useEffect(() => {
+    // Fetch initial data if no search param
+    if (!search) {
+      getMembers({ search: "" })
+    }
+  }, [getMembers, search])
+
+  const handleSearch = useCallback(
+    async (value: string) => {
+      setSearch(value)
+      await getMembers({ search: value })
+    },
+    [getMembers, setSearch]
+  )
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Search members..."
-            className="pl-8"
-            value={query ?? ""}
-            onChange={(e) => handleSearch(e.target.value)}
-          />
-        </div>
-        <Button>Invite Member</Button>
-      </div>
+    <Card>
+      <CardHeader>
+        <CardTitle>Team Members</CardTitle>
+        <CardDescription>
+          Manage your team members and their roles.
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          <div className="flex items-center gap-2">
+            <Input
+              placeholder="Search members..."
+              value={search || ""}
+              onChange={(e) => handleSearch(e.target.value)}
+              className="max-w-sm"
+            />
+          </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Team Members</CardTitle>
-          <CardDescription>
-            Manage your team members and their roles.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
           <div className="space-y-4">
-            {mockMembers.map((member) => (
+            {status === "executing" && (
+              <div className="text-sm text-muted-foreground">Loading...</div>
+            )}
+
+            {result?.data && result.data.length === 0 && (
+              <div className="text-sm text-muted-foreground">No members found</div>
+            )}
+
+            {result?.data && (result.data as TeamMember[]).map((member) => (
               <div
-                key={member.id}
-                className="flex items-center justify-between p-4 border rounded-lg"
+                key={member.user.id}
+                className="flex items-center justify-between rounded-lg border p-4"
               >
-                <div className="flex items-center space-x-4">
+                <div className="flex items-center gap-4">
                   <Avatar>
-                    <AvatarImage src={member.avatar_url} alt={member.full_name} />
+                    <AvatarImage src={member.user.avatar_url || undefined} />
                     <AvatarFallback>
-                      {member.full_name
-                        .split(" ")
-                        .map((n) => n[0])
-                        .join("")}
+                      {member.user.full_name?.[0] || member.user.email[0]}
                     </AvatarFallback>
                   </Avatar>
                   <div>
-                    <div className="font-medium">{member.full_name}</div>
+                    <div className="font-medium">
+                      {member.user.full_name || member.user.email}
+                    </div>
                     <div className="text-sm text-muted-foreground">
-                      {member.email}
+                      {member.user.email}
                     </div>
                   </div>
                 </div>
-                <Select defaultValue={member.role} disabled={member.role === "owner"}>
-                  <SelectTrigger className="w-32">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="admin">Admin</SelectItem>
-                    <SelectItem value="member">Member</SelectItem>
-                  </SelectContent>
-                </Select>
+                <div className="flex items-center gap-2">
+                  <div className="text-sm text-muted-foreground capitalize">
+                    {member.role}
+                  </div>
+                </div>
               </div>
             ))}
           </div>
-        </CardContent>
-      </Card>
-    </div>
+        </div>
+      </CardContent>
+    </Card>
   )
 } 

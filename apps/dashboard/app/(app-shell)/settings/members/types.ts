@@ -1,17 +1,23 @@
 export interface TeamMember {
-  id: string
-  full_name: string
-  email: string
-  role: "owner" | "admin" | "member"
-  avatar_url?: string
+  role: 'owner' | 'admin' | 'member';
+  user: {
+    id: string;
+    email: string;
+    full_name: string | null;
+    avatar_url: string | null;
+  };
 }
 
-export interface PendingInvite {
-  id: string
-  full_name: string
-  email: string
-  role: "admin" | "member"
-  expires_at: string
+export interface TeamInvitation {
+  id: string;
+  team_id: string;
+  inviter_id: string;
+  invitee_email: string;
+  role: 'admin' | 'member';
+  status: 'pending' | 'accepted' | 'rejected' | 'expired';
+  expires_at: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface SearchParams {
