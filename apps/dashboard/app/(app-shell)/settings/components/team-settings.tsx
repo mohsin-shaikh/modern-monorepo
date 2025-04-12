@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@pkg/ui/components/avatar"
 import { Button } from "@pkg/ui/components/button"
 import { Input } from "@pkg/ui/components/input"
 import { Label } from "@pkg/ui/components/label"
+import { updateTeamAction } from "@/actions/update-team-action"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -46,8 +47,10 @@ export function TeamSettings() {
   const handleTeamNameUpdate = async () => {
     try {
       setIsUpdating(true)
-      // TODO: Implement team name update logic
-      // await updateTeamName(teamName)
+      await updateTeamAction({
+        name: teamName,
+        revalidatePath: "/settings"
+      })
     } catch (error) {
       console.error("Error updating team name:", error)
     } finally {

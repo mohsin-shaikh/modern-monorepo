@@ -216,6 +216,7 @@ export type Database = {
           email: string
           full_name: string | null
           id: string
+          team_id: string | null
           updated_at: string | null
         }
         Insert: {
@@ -224,6 +225,7 @@ export type Database = {
           email: string
           full_name?: string | null
           id: string
+          team_id?: string | null
           updated_at?: string | null
         }
         Update: {
@@ -232,9 +234,18 @@ export type Database = {
           email?: string
           full_name?: string | null
           id?: string
+          team_id?: string | null
           updated_at?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "users_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
@@ -305,6 +316,13 @@ export type Database = {
         Args: {
           p_team_id: string
           p_new_owner_id: string
+        }
+        Returns: undefined
+      }
+      update_user_team_id: {
+        Args: {
+          p_user_id: string
+          p_team_id: string
         }
         Returns: undefined
       }
