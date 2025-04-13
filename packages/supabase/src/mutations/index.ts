@@ -74,3 +74,35 @@ export async function cancelTeamInvitation(
     .eq("id", invitationId)
     .throwOnError();
 }
+
+export async function switchTeamMutation(
+  supabase: Client,
+  userId: string,
+  teamId: string
+): Promise<PostgrestSingleResponse<Tables<"users">>> {
+  try {
+    // First check if user is a member of the team
+    const { data: membership } = await supabase
+      .from("team_members")
+      .select("*")
+      .eq("user_id", userId)
+      .eq("team_id", teamId)
+      .single();
+
+    if (!membership) {
+      throw new Error("User is not a member of this team");
+    }
+
+    // Update user's current team
+    return supabase
+      .from("users")
+      .update({ team_id: teamId })
+      .eq("id", userId)
+      .select()
+      .single()
+      .throwOnError();
+  } catch (error) {
+    logger.error("Error switching team:", error);
+    throw error;
+  }
+}

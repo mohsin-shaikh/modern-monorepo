@@ -18,6 +18,31 @@ export async function getUser() {
   }
 }
 
+export const getTeams = async () => {
+  const supabase = await createClient();
+
+  const {data} = await getUser();
+  const userId = data?.user?.id;
+
+  if (!userId) {
+    return;
+  }
+
+  return getTeamsByUserIdQuery(supabase, userId);
+};
+
+export async function getTeamsByUserIdQuery(supabase: Client, userId: string) {
+  return await supabase
+    .from("team_members")
+    .select(
+      `
+      role,
+      ...teams!inner(*)`,
+    )
+    .eq("user_id", userId)
+    .throwOnError();
+}
+
 export async function getPosts() {
   const supabase = await createClient();
 
@@ -107,4 +132,24 @@ export async function getPendingInvitationsQuery(
   }
 
   return query.throwOnError();
+}
+
+export async function getUserTeamsQuery(
+  supabase: Client,
+  userId: string
+): Promise<PostgrestResponse<any>> {
+  return supabase
+    .from("team_members")
+    .select(
+      `
+      role,
+      team:teams!team_members_team_id_fkey (
+        id,
+        name,
+        plan
+      )
+    `
+    )
+    .eq("user_id", userId)
+    .throwOnError();
 }

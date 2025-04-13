@@ -26,3 +26,9 @@ export const cancelTeamInvitationSchema = z.object({
     invitationId: z.string(),
     revalidatePath: z.string().optional(),
 });
+
+export const getUserTeamsSchema = z.object({});
+
+export const switchTeamSchema = z.object({
+  teamId: z.string(),
+});
