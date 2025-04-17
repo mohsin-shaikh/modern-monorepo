@@ -9,202 +9,160 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      posts: {
-        Row: {
-          content: string | null
-          created_at: string
-          id: string
-          team_id: string | null
-          title: string
-          updated_at: string
-          user_id: string
-        }
-        Insert: {
-          content?: string | null
-          created_at?: string
-          id?: string
-          team_id?: string | null
-          title: string
-          updated_at?: string
-          user_id: string
-        }
-        Update: {
-          content?: string | null
-          created_at?: string
-          id?: string
-          team_id?: string | null
-          title?: string
-          updated_at?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "posts_team_id_fkey"
-            columns: ["team_id"]
-            isOneToOne: false
-            referencedRelation: "teams"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "posts_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      team_invitations: {
-        Row: {
-          created_at: string
-          expires_at: string
-          id: string
-          invitee_email: string
-          inviter_id: string
-          role: string
-          status: string
-          team_id: string
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          expires_at?: string
-          id?: string
-          invitee_email: string
-          inviter_id: string
-          role: string
-          status?: string
-          team_id: string
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          expires_at?: string
-          id?: string
-          invitee_email?: string
-          inviter_id?: string
-          role?: string
-          status?: string
-          team_id?: string
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "team_invitations_inviter_id_fkey"
-            columns: ["inviter_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "team_invitations_team_id_fkey"
-            columns: ["team_id"]
-            isOneToOne: false
-            referencedRelation: "teams"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      team_members: {
-        Row: {
-          created_at: string
-          role: string
-          team_id: string
-          user_id: string
-        }
-        Insert: {
-          created_at?: string
-          role: string
-          team_id: string
-          user_id: string
-        }
-        Update: {
-          created_at?: string
-          role?: string
-          team_id?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "team_members_team_id_fkey"
-            columns: ["team_id"]
-            isOneToOne: false
-            referencedRelation: "teams"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "team_members_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       teams: {
         Row: {
-          avatar_url: string | null
           created_at: string
-          description: string | null
+          email: string | null
           id: string
-          max_members: number
-          name: string
-          updated_at: string
+          inbox_email: string | null
+          inbox_forwarding: boolean | null
+          inbox_id: string | null
+          logo_url: string | null
+          name: string | null
         }
         Insert: {
-          avatar_url?: string | null
           created_at?: string
-          description?: string | null
+          email?: string | null
           id?: string
-          max_members?: number
-          name: string
-          updated_at?: string
+          inbox_email?: string | null
+          inbox_forwarding?: boolean | null
+          inbox_id?: string | null
+          logo_url?: string | null
+          name?: string | null
         }
         Update: {
-          avatar_url?: string | null
           created_at?: string
-          description?: string | null
+          email?: string | null
           id?: string
-          max_members?: number
-          name?: string
-          updated_at?: string
+          inbox_email?: string | null
+          inbox_forwarding?: boolean | null
+          inbox_id?: string | null
+          logo_url?: string | null
+          name?: string | null
         }
         Relationships: []
+      }
+      user_invites: {
+        Row: {
+          code: string | null
+          created_at: string
+          email: string | null
+          id: string
+          invited_by: string | null
+          role: Database["public"]["Enums"]["teamRoles"] | null
+          team_id: string | null
+        }
+        Insert: {
+          code?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          invited_by?: string | null
+          role?: Database["public"]["Enums"]["teamRoles"] | null
+          team_id?: string | null
+        }
+        Update: {
+          code?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          invited_by?: string | null
+          role?: Database["public"]["Enums"]["teamRoles"] | null
+          team_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_user_invites_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_invites_invited_by_fkey"
+            columns: ["invited_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       users: {
         Row: {
           avatar_url: string | null
           created_at: string | null
-          email: string
+          email: string | null
           full_name: string | null
           id: string
+          locale: string | null
           team_id: string | null
-          updated_at: string | null
+          week_starts_on_monday: boolean | null
         }
         Insert: {
           avatar_url?: string | null
           created_at?: string | null
-          email: string
+          email?: string | null
           full_name?: string | null
           id: string
+          locale?: string | null
           team_id?: string | null
-          updated_at?: string | null
+          week_starts_on_monday?: boolean | null
         }
         Update: {
           avatar_url?: string | null
           created_at?: string | null
-          email?: string
+          email?: string | null
           full_name?: string | null
           id?: string
+          locale?: string | null
           team_id?: string | null
-          updated_at?: string | null
+          week_starts_on_monday?: boolean | null
         }
         Relationships: [
           {
-            foreignKeyName: "fk_current_team"
+            foreignKeyName: "users_team_id_fkey"
             columns: ["team_id"]
             isOneToOne: false
             referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      users_on_team: {
+        Row: {
+          created_at: string | null
+          id: string
+          role: Database["public"]["Enums"]["teamRoles"] | null
+          team_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["teamRoles"] | null
+          team_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["teamRoles"] | null
+          team_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "users_on_team_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "users_on_team_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
             referencedColumns: ["id"]
           },
         ]
@@ -214,33 +172,33 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      check_team_member_access: {
+      create_team: {
         Args: {
-          p_team_id: string
-          p_user_id: string
+          name: string
         }
-        Returns: boolean
+        Returns: string
       }
-      check_user_team_role: {
+      generate_inbox: {
         Args: {
-          p_user_id: string
-          p_team_id: string
-          p_roles: string[]
+          size: number
         }
-        Returns: boolean
+        Returns: string
       }
-      get_user_team_roles: {
+      get_current_user_team_id: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
+      nanoid: {
         Args: {
-          p_user_id: string
+          size?: number
+          alphabet?: string
+          additionalbytesfactor?: number
         }
-        Returns: {
-          team_id: string
-          role: string
-        }[]
+        Returns: string
       }
     }
     Enums: {
-      [_ in never]: never
+      teamRoles: "owner" | "admin" | "member"
     }
     CompositeTypes: {
       [_ in never]: never

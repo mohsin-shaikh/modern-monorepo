@@ -1,7 +1,7 @@
 "use client"
 
 import { useThemeConfig } from "@/components/active-theme"
-import { DEFAULT_THEMES, SCALED_THEMES, MONO_THEMES } from "@/lib/themes"
+import { DEFAULT_THEMES, SCALED_THEMES, MONO_THEMES } from "@/utils/themes"
 import { Label } from "@pkg/ui/components/label"
 import {
   Select,
