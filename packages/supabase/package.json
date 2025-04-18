@@ -12,7 +12,7 @@
     "@pkg/logger": "workspace:*",
     "@supabase/ssr": "^0.6.1",
     "server-only": "^0.0.1",
-    "supabase": "^1.226.4"
+    "supabase": "^2.20.12"
   },
   "devDependencies": {
     "@supabase/supabase-js": "^2.49.4",

@@ -1,11 +1,5 @@
 import { z } from 'zod';
 
-// export const updateTeamSchema = z.object({
-//     name: z.string().min(2).max(32).optional(),
-//     logo_url: z.string().url().optional(),
-//     revalidatePath: z.string().optional(),
-// });
-
 export const inviteTeamMemberSchema = z.object({
     invitee_email: z.string().email(),
     role: z.enum(['admin', 'member']),

@@ -17,7 +17,7 @@ import {
 } from "@pkg/ui/components/dropdown-menu";
 import Link from "next/link";
 import { SignOut } from "@/components/sign-out";
-import { ThemeSwitch } from "@/components/theme-switch";
+import { ModeSelector } from "@/components/mode-selector";
 
 type Props = {
   onlySignOut?: boolean;
@@ -81,7 +81,7 @@ export function UserMenu({ onlySignOut }: Props) {
             <DropdownMenuSeparator />
             <div className="flex flex-row justify-between items-center p-2">
               <p className="text-sm">Theme</p>
-              <ThemeSwitch />
+              <ModeSelector />
             </div>
             <DropdownMenuSeparator />
           </>

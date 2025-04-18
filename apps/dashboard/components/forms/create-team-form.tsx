@@ -1,14 +1,14 @@
 "use client";
 
 import { changeTeamAction } from "@/actions/change-team-action";
-// import { SelectCurrency } from "@/components/select-currency";
+import { SelectCurrency } from "@/components/select-currency";
 import { useZodForm } from "@/hooks/use-zod-form";
 import { useTRPC } from "@/trpc/client";
-// import { uniqueCurrencies } from "@pkg/location/currencies";
+import { uniqueCurrencies } from "@pkg/location/currencies";
 import {
   Form,
   FormControl,
-  // FormDescription,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -91,7 +91,7 @@ export function CreateTeamForm({ defaultCurrencyPromise }: Props) {
           )}
         />
 
-        {/* <FormField
+        <FormField
           control={form.control}
           name="baseCurrency"
           render={({ field }) => (
@@ -108,7 +108,7 @@ export function CreateTeamForm({ defaultCurrencyPromise }: Props) {
               <FormMessage />
             </FormItem>
           )}
-        /> */}
+        />
 
         <SubmitButton
           className="mt-6 w-full"

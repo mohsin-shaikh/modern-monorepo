@@ -1,10 +1,10 @@
 import { AccountSettings } from '@/components/account-settings';
+import type { Metadata } from 'next';
 
-export const metadata = {
-  title: 'Account Settings',
-  description: 'Manage your account settings and preferences.',
+export const metadata: Metadata = {
+  title: 'Account Settings'
 };
 
-export default function AccountPage() {
+export default function Account() {
   return <AccountSettings />;
 }

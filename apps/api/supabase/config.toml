@@ -4,7 +4,7 @@ project_id = "env(PROJECT_ID)"
 enabled = true
 port = 54321
 schemas = ["public", "storage"]
-extra_search_path = ["public"]
+extra_search_path = ["public", "extensions"]
 max_rows = 100
 
 [auth]

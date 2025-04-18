@@ -2,14 +2,10 @@ import { cookies } from "next/headers"
 import { createClient } from "@pkg/supabase/server"
 
 import { AppSidebar } from "@/components/app-sidebar"
-import { ModeSwitcher } from "@/components/mode-switcher"
 import { NavHeader } from "@/components/nav-header"
-import { ThemeSelector } from "@/components/theme-selector"
-import { Separator } from "@pkg/ui/components/separator"
 import {
   SidebarInset,
   SidebarProvider,
-  SidebarTrigger,
 } from "@pkg/ui/components/sidebar"
 
 export default async function AppLayout({

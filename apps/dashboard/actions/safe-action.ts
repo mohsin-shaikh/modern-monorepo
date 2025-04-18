@@ -1,8 +1,6 @@
-// import * as Sentry from "@sentry/nextjs";
 // import { setupAnalytics } from "@pkg/analytics/server";
-// import { ratelimit } from "@pkg/kv/ratelimit";
-import { logger } from "@pkg/logger";
-import { getUser } from "@pkg/supabase/queries";
+import { logger } from "@/utils/logger";
+import { getUser } from "@pkg/supabase/cached-queries";
 import { createClient } from "@pkg/supabase/server";
 import {
   DEFAULT_SERVER_ERROR_MESSAGE,
@@ -45,41 +43,20 @@ export const authActionClient = actionClientWithMeta
     const result = await next({ ctx: {} });
 
     if (process.env.NODE_ENV === "development") {
-      logger.info(`Input -> ${JSON.stringify(clientInput)}`);
-      logger.info(`Result -> ${JSON.stringify(result.data)}`);
-      logger.info(`Metadata -> ${JSON.stringify(metadata)}`);
+      logger("Input ->", clientInput);
+      logger("Result ->", result.data);
+      logger("Metadata ->", metadata);
 
       return result;
     }
 
     return result;
   })
-//   .use(async ({ next, metadata }) => {
-//     const ip = headers().get("x-forwarded-for");
-
-//     const { success, remaining } = await ratelimit.limit(
-//       `${ip}-${metadata.name}`,
-//     );
-
-//     if (!success) {
-//       throw new Error("Too many requests");
-//     }
-
-//     return next({
-//       ctx: {
-//         ratelimit: {
-//           remaining,
-//         },
-//       },
-//     });
-//   })
   .use(async ({ next, metadata }) => {
-    const {
-      data: { user },
-    } = await getUser();
+    const user = await getUser();
     const supabase = await createClient();
 
-    if (!user) {
+    if (!user?.data) {
       throw new Error("Unauthorized");
     }
 
@@ -93,12 +70,10 @@ export const authActionClient = actionClientWithMeta
     //   }
     // }
 
-    // return Sentry.withServerActionInstrumentation(metadata.name, async () => {
-      return next({
-        ctx: {
-          supabase,
-          user,
-        },
-      });
-    // });
+    return next({
+      ctx: {
+        supabase,
+        user: user.data,
+      },
+    });
   });

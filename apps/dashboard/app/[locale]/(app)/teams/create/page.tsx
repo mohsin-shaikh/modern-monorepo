@@ -1,12 +1,12 @@
 import { CreateTeamForm } from "@/components/forms/create-team-form";
 import { UserMenu } from "@/components/user-menu";
-import { getCurrency } from "@midday/location";
-import { Icons } from "@midday/ui/icons";
+import { getCurrency } from "@pkg/location";
+import { Icons } from "@pkg/ui/components/icons";
 import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Create Team | Midday",
+  title: "Create Team | ZUUPEE",
 };
 
 export default function CreateTeam() {

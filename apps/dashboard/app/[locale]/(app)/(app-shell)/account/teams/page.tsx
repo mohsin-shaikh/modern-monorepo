@@ -1,14 +1,20 @@
-import { TeamsList } from "./components/teams-list"
+import { TeamsTable } from "@/components/tables/teams";
+import { TeamsSkeleton } from "@/components/tables/teams/skeleton";
+import { prefetch, trpc } from "@/trpc/server";
+import type { Metadata } from "next";
+import { Suspense } from "react";
 
-export const metadata = {
-  title: "Teams",
-  description: "Manage your team memberships.",
-}
+export const metadata: Metadata = {
+  title: "Teams | ZUUPEE",
+};
 
-export default function TeamsPage() {
+export default function Teams() {
+  prefetch(trpc.team.list.queryOptions());
+  prefetch(trpc.user.invites.queryOptions());
+
   return (
-    <div className="space-y-6">
-      <TeamsList />
-    </div>
-  )
-} 
+    <Suspense fallback={<TeamsSkeleton />}>
+      <TeamsTable />
+    </Suspense>
+  );
+}

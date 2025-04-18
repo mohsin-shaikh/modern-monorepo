@@ -17,6 +17,7 @@
     "@pkg/supabase": "workspace:*",
     "@pkg/ui": "workspace:*",
     "@pkg/utils": "workspace:*",
+    "@pkg/location": "workspace:*",
     "@supabase/ssr": "^0.6.1",
     "@supabase/supabase-js": "^2.49.4",
     "@tanstack/react-query": "^5.72.2",

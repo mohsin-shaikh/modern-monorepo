@@ -46,7 +46,7 @@ export function TeamName() {
           <CardHeader>
             <CardTitle>Team Name</CardTitle>
             <CardDescription>
-              This is your team's visible name within Midday. For example, the
+              This is your team's visible name within ZUUPEE. For example, the
               name of your company or department.
             </CardDescription>
           </CardHeader>

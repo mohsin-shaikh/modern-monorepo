@@ -198,6 +198,8 @@ export const teamRouter = createTRPCRouter({
         })),
       });
 
+      console.log({data, teamId});
+
       const invites =
         data?.map((invite) => ({
           email: invite.email!,

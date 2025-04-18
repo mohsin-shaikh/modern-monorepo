@@ -1,30 +1,41 @@
-"use client";
+'use client';
 
-import { changeTeamAction } from "@/actions/change-team-action";
-import { useUserQuery } from "@/hooks/use-user";
-import { useTRPC } from "@/trpc/client";
+import { changeTeamAction } from '@/actions/change-team-action';
+import { useUserQuery } from '@/hooks/use-user';
+import { useTRPC } from '@/trpc/client';
 import {
   Avatar,
   AvatarFallback,
   AvatarImageNext,
-} from "@pkg/ui/components/avatar";
-import { Button } from "@pkg/ui/components/button";
-import { Icons } from "@pkg/ui/components/icons";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useClickAway } from "@uidotdev/usehooks";
-import { AnimatePresence, motion } from "framer-motion";
-import { useAction } from "next-safe-action/hooks";
-import Link from "next/link";
-import { useEffect, useState } from "react";
+} from '@pkg/ui/components/avatar';
+import {
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+} from '@pkg/ui/components/dropdown-menu';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from '@pkg/ui/components/dropdown-menu';
+import { SidebarMenuButton, SidebarMenuItem, useSidebar } from '@pkg/ui/components/sidebar';
+import { SidebarMenu } from '@pkg/ui/components/sidebar';
+import { ChevronsUpDown, Plus } from 'lucide-react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useAction } from 'next-safe-action/hooks';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export function TeamDropdown() {
   const { data: user } = useUserQuery();
   const queryClient = useQueryClient();
 
+  const router = useRouter()
+  const { isMobile } = useSidebar()
+
   const [selectedId, setSelectedId] = useState<string | undefined>(
-    user?.team?.id,
+    user?.team?.id
   );
-  const [isActive, setActive] = useState(false);
   const [isChangingTeam, setIsChangingTeam] = useState(false);
 
   const changeTeam = useAction(changeTeamAction, {
@@ -52,108 +63,118 @@ export function TeamDropdown() {
       return a.team.id.localeCompare(b.team.id);
     }) ?? [];
 
-  const ref = useClickAway<HTMLDivElement>(() => {
-    if (!isChangingTeam) {
-      setActive(false);
-    }
-  });
-
-  const toggleActive = () => setActive((prev) => !prev);
-
   const handleTeamChange = (teamId: string) => {
     if (teamId === selectedId) {
-      toggleActive();
       return;
     }
 
     setIsChangingTeam(true);
     setSelectedId(teamId);
-    setActive(false);
 
-    changeTeam.execute({ teamId, redirectTo: "/" });
+    changeTeam.execute({ teamId, redirectTo: '/' });
   };
 
   return (
-    <motion.div ref={ref} layout className="w-[32px] h-[32px] relative">
-      <AnimatePresence>
-        {isActive && (
-          <motion.div
-            className="w-[32px] h-[32px] left-0 overflow-hidden absolute"
-            style={{ zIndex: 1 }}
-            initial={{ y: 0, opacity: 0 }}
-            animate={{ y: -(32 + 10) * sortedTeams.length, opacity: 1 }}
-            transition={{
-              type: "spring",
-              stiffness: 400,
-              damping: 25,
-              mass: 1.2,
-            }}
-          >
-            <Link href="/teams/create" onClick={() => setActive(false)}>
-              <Button
-                className="w-[32px] h-[32px]"
-                size="icon"
-                variant="outline"
+      <SidebarMenu>
+        <SidebarMenuItem>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <SidebarMenuButton
+                size='lg'
+                className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground'
               >
-                <Icons.Add />
-              </Button>
-            </Link>
-          </motion.div>
-        )}
-        {sortedTeams.map(({ team }, index) => (
-          <motion.div
-            key={team.id}
-            className="w-[32px] h-[32px] left-0 overflow-hidden absolute"
-            style={{ zIndex: -index }}
-            initial={{
-              scale: `${100 - index * 16}%`,
-              y: index * 5,
-            }}
-            animate={
-              isActive
-                ? {
-                    y: -(32 + 10) * index,
-                    scale: "100%",
-                  }
-                : {
-                    scale: `${100 - index * 16}%`,
-                    y: index * 5,
-                  }
-            }
-            transition={{
-              type: "spring",
-              stiffness: 400,
-              damping: 25,
-              mass: 1.2,
-            }}
-          >
-            <Avatar
-              className="w-[32px] h-[32px] rounded-none border border-[#DCDAD2] dark:border-[#2C2C2C] cursor-pointer"
-              onClick={() => {
-                if (index === 0) {
-                  toggleActive();
-                } else {
-                  handleTeamChange(team.id);
-                }
-              }}
+                <div className='bg-sidebar-primary flex aspect-square size-8 items-center justify-center rounded-lg'>
+                  <Avatar
+                    className='w-[32px] h-[32px] rounded-md border border-[#DCDAD2] dark:border-[#2C2C2C] cursor-pointer'
+                  >
+                    <AvatarImageNext
+                      src={sortedTeams[0]?.team?.logo_url ?? ''}
+                      alt={sortedTeams[0]?.team?.name ?? ''}
+                      width={20}
+                      height={20}
+                      quality={100}
+                    />
+                    <AvatarFallback className='rounded-none w-[32px] h-[32px]'>
+                      <span className='text-xs'>
+                        {sortedTeams[0]?.team?.name
+                          ?.charAt(0)
+                          ?.toUpperCase()}
+                        {sortedTeams[0]?.team?.name
+                          ?.charAt(1)
+                          ?.toUpperCase()}
+                      </span>
+                    </AvatarFallback>
+                  </Avatar>
+                </div>
+                <div className='grid flex-1 text-left text-sm leading-tight'>
+                  <span className='truncate font-medium'>
+                    {sortedTeams[0]?.team?.name}
+                  </span>
+                  <span className='truncate text-xs'>
+                    {'Free Plan'}
+                  </span>
+                </div>
+                <ChevronsUpDown className='ml-auto' />
+              </SidebarMenuButton>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              className='w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg'
+              align='start'
+              side={isMobile ? 'bottom' : 'right'}
+              sideOffset={4}
             >
-              <AvatarImageNext
-                src={team.logo_url ?? ""}
-                alt={team.name ?? ""}
-                width={20}
-                height={20}
-                quality={100}
-              />
-              <AvatarFallback className="rounded-none w-[32px] h-[32px]">
-                <span className="text-xs">
-                  {team?.name?.charAt(0)?.toUpperCase()}
-                  {team?.name?.charAt(1)?.toUpperCase()}
-                </span>
-              </AvatarFallback>
-            </Avatar>
-          </motion.div>
-        ))}
-      </AnimatePresence>
-    </motion.div>
+              <DropdownMenuLabel className='text-muted-foreground text-xs'>
+                Teams
+              </DropdownMenuLabel>
+              {sortedTeams.map(({ team }) => (
+                <DropdownMenuItem
+                  key={team.id}
+                  onClick={() => {
+                    handleTeamChange(team.id);
+                  }}
+                  className='gap-2 p-2'
+                >
+                  <div className='flex size-6 items-center justify-center rounded-md border'>
+                    <Avatar
+                      className='w-[32px] h-[32px] rounded-md border border-[#DCDAD2] dark:border-[#2C2C2C] cursor-pointer'
+                    >
+                      <AvatarImageNext
+                        src={team.logo_url ?? ''}
+                        alt={team.name ?? ''}
+                        width={20}
+                        height={20}
+                        quality={100}
+                      />
+                      <AvatarFallback className='rounded-none w-[32px] h-[32px]'>
+                        <span className='text-xs'>
+                          {team?.name
+                            ?.charAt(0)
+                            ?.toUpperCase()}
+                          {team?.name
+                            ?.charAt(1)
+                            ?.toUpperCase()}
+                        </span>
+                      </AvatarFallback>
+                    </Avatar>
+                  </div>
+                  {team.name}
+                </DropdownMenuItem>
+              ))}
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                className='gap-2 p-2'
+                onClick={() => router.push('/teams/create')}
+              >
+                <div className='flex size-6 items-center justify-center rounded-md border bg-transparent'>
+                  <Plus className='size-4' />
+                </div>
+                <div className='text-muted-foreground font-medium'>
+                  Add team
+                </div>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </SidebarMenuItem>
+      </SidebarMenu>
   );
 }

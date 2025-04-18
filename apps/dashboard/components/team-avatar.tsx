@@ -40,7 +40,7 @@ export function TeamAvatar() {
   return (
     <Card>
       <div className="flex justify-between items-center pr-6">
-        <CardHeader>
+        <CardHeader className="flex-1">
           <CardTitle>Team Avatar</CardTitle>
           <CardDescription>
             This is your team's avatar. Click on the avatar to upload a custom

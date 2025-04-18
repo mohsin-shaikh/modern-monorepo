@@ -1,16 +1,16 @@
 import { SignOutButton } from "@/components/sign-out-button";
 import { UserMenu } from "@/components/user-menu";
-import { joinTeamByInviteCode } from "@midday/supabase/mutations";
-import { createClient } from "@midday/supabase/server";
-import { Button } from "@midday/ui/button";
-import { Icons } from "@midday/ui/icons";
+import { joinTeamByInviteCode } from "@pkg/supabase/mutations";
+import { createClient } from "@pkg/supabase/server";
+import { Button } from "@pkg/ui/components/button";
+import { Icons } from "@pkg/ui/components/icons";
 import type { Metadata } from "next";
 import { revalidateTag } from "next/cache";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
-  title: "Join team | Midday",
+  title: "Join team | ZUUPEE",
 };
 
 export default async function InviteCode(props: {

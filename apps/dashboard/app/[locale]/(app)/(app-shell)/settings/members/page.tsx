@@ -1,32 +1,14 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@pkg/ui/components/tabs"
-import { TeamMembers } from "./components/team-members"
-import { PendingInvitations } from "./components/pending-invitations"
-import { getTeamMembersAction, getPendingInvitationsAction } from "@/actions/team-members-action"
+import { TeamMembers } from "@/components/team-members";
+import { prefetch, trpc } from "@/trpc/server";
+import type { Metadata } from "next";
 
-export const metadata = {
-  title: "Members",
-  description: "Manage your team members and invitations.",
+export const metadata: Metadata = {
+  title: "Members | ZUUPEE",
+};
+
+export default function Members() {
+  prefetch(trpc.team.members.queryOptions());
+  prefetch(trpc.team.invites.queryOptions());
+
+  return <TeamMembers />;
 }
-
-export default async function MembersPage() {
-  // Pre-fetch data
-  await getTeamMembersAction({ search: "" });
-  await getPendingInvitationsAction({ search: "" });
-
-  return (
-    <div className="space-y-6">
-      <Tabs defaultValue="members" className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="members">Team Members</TabsTrigger>
-          <TabsTrigger value="invitations">Pending Invitations</TabsTrigger>
-        </TabsList>
-        <TabsContent value="members" className="space-y-4">
-          <TeamMembers />
-        </TabsContent>
-        <TabsContent value="invitations" className="space-y-4">
-          <PendingInvitations />
-        </TabsContent>
-      </Tabs>
-    </div>
-  )
-} 

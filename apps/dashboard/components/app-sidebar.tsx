@@ -2,12 +2,9 @@
 
 import * as React from "react"
 import {
-  AudioWaveform,
   CircleHelp,
-  Command,
   Database,
   Folder,
-  GalleryVerticalEnd,
   Gauge,
   ScrollText,
   Search,
@@ -16,7 +13,6 @@ import {
 } from "lucide-react"
 
 import { NavUser } from "@/components/nav-user"
-import { TeamSwitcher } from "@/components/team-switcher"
 import {
   Sidebar,
   SidebarContent,
@@ -24,29 +20,13 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@pkg/ui/components/sidebar"
-import { NavDocuments } from "./nav-documents"
-import { NavMain } from "./nav-main"
-import { NavSecondary } from "./nav-secondary"
+import { NavDocuments } from "@/components/nav-documents"
+import { NavMain } from "@/components/nav-main"
+import { NavSecondary } from "@/components/nav-secondary"
+import { TeamDropdown } from "@/components/team-dropdown"
 
 // This is sample data.
 const data = {
-  teams: [
-    {
-      name: "Acme Inc",
-      logo: GalleryVerticalEnd,
-      plan: "Enterprise",
-    },
-    {
-      name: "Acme Corp.",
-      logo: AudioWaveform,
-      plan: "Startup",
-    },
-    {
-      name: "Evil Corp.",
-      logo: Command,
-      plan: "Free",
-    },
-  ],
   navMain: [
     {
       title: "Dashboard",
@@ -108,7 +88,7 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher />
+        <TeamDropdown />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />

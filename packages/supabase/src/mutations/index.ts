@@ -1,102 +1,24 @@
 import { logger } from "@pkg/logger";
 import { createClient } from "@pkg/supabase/server";
 import type { Database, Tables, TablesUpdate, Client } from "../types";
-import { getCurrentUserTeamQuery, getUser } from "../queries";
-import { PostgrestSingleResponse } from "@supabase/postgrest-js";
+import { getCurrentUserTeamQuery, getUserInviteQuery } from "../queries";
 
-export async function updateUser(userId: string, data: TablesUpdate<"users">) {
-  const supabase = createClient();
-
-  try {
-    const result = await supabase.from("users").update(data).eq("id", userId);
-
-    return result;
-  } catch (error) {
-    logger.error(error);
-
-    throw error;
-  }
-}
-
-interface InviteTeamMemberData {
-  invitee_email: string;
-  role: 'admin' | 'member';
-}
-
-export async function inviteTeamMember(
-  supabase: Client,
-  teamId: string,
-  data: InviteTeamMemberData
-): Promise<PostgrestSingleResponse<any>> {
-  const {
-    data: { user },
-  } = await getUser();
-
-  if (!user) {
-    throw new Error("User not found");
-  }
-
-  return supabase
-    .from("user_invites")
-    .insert({
-      team_id: teamId,
-      inviter_id: user.id,
-      invitee_email: data.invitee_email,
-      role: data.role,
-      status: "pending",
-      expires_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), // 7 days from now
-    })
-    .select()
-    .single()
-    .throwOnError();
-}
-
-export async function cancelTeamInvitation(
-  supabase: Client,
-  invitationId: string
-): Promise<PostgrestSingleResponse<any>> {
-  return supabase
-    .from("user_invites")
-    .delete()
-    .eq("id", invitationId)
-    .throwOnError();
-}
-
-export async function switchTeamMutation(
-  supabase: Client,
-  userId: string,
-  teamId: string
-): Promise<PostgrestSingleResponse<Tables<"users">>> {
-  try {
-    // First check if user is a member of the team
-    const { data: membership } = await supabase
-      .from("team_members")
-      .select("*")
-      .eq("user_id", userId)
-      .eq("team_id", teamId)
-      .single();
-
-    if (!membership) {
-      throw new Error("User is not a member of this team");
-    }
-
-    // Update user's current team
-    return supabase
-      .from("users")
-      .update({ team_id: teamId })
-      .eq("id", userId)
-      .select()
-      .single()
-      .throwOnError();
-  } catch (error) {
-    logger.error("Error switching team:", error);
-    throw error;
-  }
-}
 
 // ------------------------------------------------------------
 // User Mutations
 // ------------------------------------------------------------
+type UpdateUserParams = {
+  id: string;
+  full_name?: string | null;
+  team_id?: string | null;
+};
+
+export async function updateUser(supabase: Client, data: UpdateUserParams) {
+  const { id, ...input } = data;
+
+  return supabase.from("users").update(input).eq("id", id).select().single();
+}
+
 type DeleteUserParams = {
   id: string;
 };
@@ -138,9 +60,10 @@ type CreateTeamParams = {
 
 export async function createTeam(supabase: Client, params: CreateTeamParams) {
   // TODO: Update needed
-  const { data: teamId } = await supabase.rpc("create_team_v2", {
+  // const { data: teamId } = await supabase.rpc("create_team_v2", {
+  const { data: teamId } = await supabase.rpc("create_team", {
     name: params.name,
-    currency: params.baseCurrency,
+    // currency: params.baseCurrency,
   });
 
   return {
@@ -199,7 +122,9 @@ export async function createTeamInvites(
 ) {
   const { teamId, invites } = params;
 
-  return supabase
+  console.log({teamId, invites});
+
+  const { data: response, error } = await supabase
     .from("user_invites")
     .upsert(
       invites.map((invite) => ({
@@ -207,11 +132,15 @@ export async function createTeamInvites(
         team_id: teamId,
       })),
       {
-        onConflict: "invitee_email, team_id",
+        onConflict: "email, team_id",
         ignoreDuplicates: false,
       },
     )
-    .select("email, code, user:invited_by(*), team:team_id(*)"); // TODO: Update needed
+    .select("email, code, user:invited_by(*), team:team_id(*)");
+
+  console.log(error, response);
+
+  return response;
 }
 
 type AcceptTeamInviteParams = {
@@ -237,7 +166,7 @@ export async function acceptTeamInvite(
   }
 
   await Promise.all([
-    supabase.from("team_members").insert({
+    supabase.from("users_on_team").insert({
       user_id: userId,
       role: inviteData.role,
       team_id: teamId,
@@ -294,7 +223,7 @@ export async function deleteTeamMember(
   params: DeleteTeamMemberParams,
 ) {
   return supabase
-    .from("team_members")
+    .from("users_on_team")
     .delete()
     .eq("user_id", params.userId)
     .eq("team_id", params.teamId)
@@ -318,7 +247,7 @@ export async function leaveTeam(supabase: Client, params: LeaveTeamParams) {
       .eq("team_id", params.teamId),
 
     supabase
-      .from("team_members")
+      .from("users_on_team")
       .delete()
       .eq("team_id", params.teamId)
       .eq("user_id", params.userId)
@@ -342,10 +271,51 @@ export async function updateTeamMember(
   const { userId, teamId, role } = params;
 
   return supabase
-    .from("team_members")
+    .from("users_on_team")
     .update({ role })
     .eq("user_id", userId)
     .eq("team_id", teamId)
     .select()
     .single();
+}
+
+export async function joinTeamByInviteCode(supabase: Client, code: string) {
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  if (!session?.user.email) {
+    return;
+  }
+
+  const { data: inviteData } = await getUserInviteQuery(supabase, {
+    code,
+    email: session.user.email,
+  });
+
+  if (inviteData) {
+    // Add user team
+    await supabase.from("users_on_team").insert({
+      user_id: session.user.id,
+      team_id: inviteData?.team_id,
+      role: inviteData.role,
+    });
+
+    // Set current team
+    const { data } = await supabase
+      .from("users")
+      .update({
+        team_id: inviteData?.team_id,
+      })
+      .eq("id", session.user.id)
+      .select()
+      .single();
+
+    // remove invite
+    await supabase.from("user_invites").delete().eq("code", code);
+
+    return data;
+  }
+
+  return null;
 }

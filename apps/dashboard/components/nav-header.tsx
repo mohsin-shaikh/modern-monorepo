@@ -2,8 +2,6 @@
 
 import { Separator } from "@pkg/ui/components/separator"
 import { SidebarTrigger } from "@pkg/ui/components/sidebar"
-import { ThemeSelector } from "@/components/theme-selector"
-import { ModeSwitcher } from "@/components/mode-switcher"
 
 export function NavHeader() {
 
@@ -16,10 +14,7 @@ export function NavHeader() {
           className="mr-2 data-[orientation=vertical]:h-4"
           />
         <h1 className="text-base font-medium">Documents</h1>
-        <div className="ml-auto flex items-center gap-2">
-          <ThemeSelector />
-          <ModeSwitcher />
-        </div>
+        <div className="ml-auto flex items-center gap-2"></div>
       </div>
     </header>
   )

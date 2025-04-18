@@ -1,11 +1,11 @@
 import { InviteForm } from "@/components/forms/invite-form";
 import { UserMenu } from "@/components/user-menu";
-import { Icons } from "@midday/ui/icons";
+import { Icons } from "@pkg/ui/components/icons";
 import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Invite Team Member | Midday",
+  title: "Invite Team Member | ZUUPEE",
 };
 
 export default function InviteMembers() {

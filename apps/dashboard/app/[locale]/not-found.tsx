@@ -9,7 +9,7 @@ export default function NotFound() {
         src={appIcon}
         width={80}
         height={80}
-        alt="Midday"
+        alt="ZUUPEE"
         quality={100}
         className="mb-10"
       />
