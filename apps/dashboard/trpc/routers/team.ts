@@ -47,6 +47,7 @@ export const teamRouter = createTRPCRouter({
       const { data } = await updateTeam(supabase, {
         id: teamId,
         name: input.name,
+        logo_url: input.logo_url,
       });
 
       return data;
