@@ -12,7 +12,7 @@
     "@pkg/logger": "workspace:*",
     "@supabase/ssr": "^0.6.1",
     "server-only": "^0.0.1",
-    "supabase": "^1.226.4"
+    "supabase": "^2.20.12"
   },
   "devDependencies": {
     "@supabase/supabase-js": "^2.49.4",
@@ -21,9 +21,12 @@
   "exports": {
     "./server": "./src/clients/server.ts",
     "./client": "./src/clients/client.ts",
+    "./job": "./src/clients/job.ts",
     "./mutations": "./src/mutations/index.ts",
     "./middleware": "./src/clients/middleware.ts",
     "./queries": "./src/queries/index.ts",
+    "./cached-queries": "./src/queries/cached-queries.ts",
+    "./storage": "./src/utils/storage.ts",
     "./types": "./src/types/index.ts"
   }
 }

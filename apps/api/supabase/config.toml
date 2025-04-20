@@ -4,12 +4,12 @@ project_id = "env(PROJECT_ID)"
 enabled = true
 port = 54321
 schemas = ["public", "storage"]
-extra_search_path = ["public"]
+extra_search_path = ["public", "extensions"]
 max_rows = 100
 
 [auth]
-site_url = "http://localhost:3000"
-additional_redirect_urls = ["https://localhost:3000", "http://localhost:54321/auth/v1/callback"]
+site_url = "http://localhost:3001"
+additional_redirect_urls = ["http://localhost:3001", "http://localhost:54321/auth/v1/callback"]
 jwt_expiry = 36000
 
 [db]

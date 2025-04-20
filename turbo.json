@@ -1,5 +1,6 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": ["**/.env"],
   "ui": "tui",
   "tasks": {
     "build": {
@@ -14,8 +15,13 @@
       "dependsOn": ["^check-types"]
     },
     "dev": {
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "cache": false,
       "persistent": true
+    },
+    "jobs": {
+      "persistent": true,
+      "cache": false
     }
   }
 }
