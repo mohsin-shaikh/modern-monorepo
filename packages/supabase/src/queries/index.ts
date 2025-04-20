@@ -1,7 +1,4 @@
-import { logger } from "@pkg/logger";
-import { createClient } from "@pkg/supabase/server";
-import { Client } from "../types";
-import { Database } from "../types";
+import type { Client } from "../types";
 
 
 // ------------------------------------------------------------

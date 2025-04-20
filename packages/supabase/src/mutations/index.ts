@@ -1,7 +1,5 @@
-import { logger } from "@pkg/logger";
-import { createClient } from "@pkg/supabase/server";
-import type { Database, Tables, TablesUpdate, Client } from "../types";
 import { getCurrentUserTeamQuery, getUserInviteQuery } from "../queries";
+import type { Client } from "../types";
 
 
 // ------------------------------------------------------------
@@ -15,6 +13,12 @@ type UpdateUserParams = {
 
 export async function updateUser(supabase: Client, data: UpdateUserParams) {
   const { id, ...input } = data;
+
+  await supabase.auth.updateUser({
+    data: {
+      full_name: input.full_name
+    },
+  });
 
   return supabase.from("users").update(input).eq("id", id).select().single();
 }
