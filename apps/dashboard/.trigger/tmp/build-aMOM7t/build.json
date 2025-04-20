@@ -1,0 +1,72 @@
+{
+  "contentHash": "4b6d4b370b5355c9c0b32aa2077d3bf2",
+  "runtime": "node",
+  "cliPackageVersion": "3.3.17",
+  "packageVersion": "3.3.17",
+  "environment": "dev",
+  "target": "dev",
+  "files": [
+    {
+      "entry": "jobs/tasks/team/delete.ts",
+      "out": "/Users/mohsin/Developer/zuupee/modern-monorepo/apps/dashboard/.trigger/tmp/build-aMOM7t/apps/dashboard/jobs/tasks/team/delete.mjs"
+    },
+    {
+      "entry": "jobs/tasks/team/invite.ts",
+      "out": "/Users/mohsin/Developer/zuupee/modern-monorepo/apps/dashboard/.trigger/tmp/build-aMOM7t/apps/dashboard/jobs/tasks/team/invite.mjs"
+    },
+    {
+      "entry": "jobs/tasks/team/onboarding.ts",
+      "out": "/Users/mohsin/Developer/zuupee/modern-monorepo/apps/dashboard/.trigger/tmp/build-aMOM7t/apps/dashboard/jobs/tasks/team/onboarding.mjs"
+    }
+  ],
+  "sources": {
+    "jobs/tasks/team/delete.ts": {
+      "contents": "eJyFU7Fu2zAQ3fUVByGDBKhSimwyXHTIEqAoOrhzwJBnhTF1dEnKjW3o3wuSkkWlQzRI4t17R/Ldu6YB2R+1cXAFriSSgxH2RveQfz8eugapk4RNTOWb7AZWuuvQVGD5K/Zsx+xhITojfbIWeGqsODSnh5R5uQEvWuSbLMP3kOGarAOBCh3ukPWwTYoX1wxAihbyCPjikPV5lcGEaeFS65c35C4gAXz+SfiwdUZSV5T1MEhRlFVIc02E3ElN1mOYMexchAx8rOSfo9EnKdCs6tGgFHtRONf0j8E9GiSOz1J8Cmaco7XPTh+QPgGP01/4xEXP3h8Hw/wdWni4v/exPwMO2MJ1viMfjD/N+YfspWvhawCN/mUGaoHZM3EorpNaVSoLjCVsv02lmgZ+k8FOWocGAsvrLgaFBoqf2nkXKeyRHAo4owNJsFtsUM5V2F8m3Y1ra4GqiJuXm2wGPYYWrw4j6dYDO8OiYRbUL6N7adHCNqXWPTsW00WX8Ppuvm9uMDSNQJ3So9/qu6O2syMCA+DNeuVXoejRhV6nfqjWyMVTCX4OfsBGp+yiURJ46qAVZUxWY7mZF+OschzfWtJeF3nQW1IXbJBql1cwz8BqYFJ9FFLnXuN2Y9LE2OmpJzVTqvi/U+FgY5V53j+aBWkH",
+      "contentHash": "f3ef0c1d15f9b7e1dd4987d937e74b6a"
+    },
+    "jobs/tasks/team/invite.ts": {
+      "contents": "eJyNVctu2zAQvPsrFjrJgCwlyKVQ6jRoo4OBtgiKBCha9EBLG5u1SKok5cY2/O8FH5JoxUHqg0zOzi7J2aFEWSOkhgNIVMgrOMKTFAyi26zVtFaZg6PrCe2IC76lGgtGaD2wm80qQwO5p8qoZYV5K9SLy3f8XE4tSlKjCtkSeYVyIEskpZ45uouFbFWukZEHojZDhpZ0tUKZVrjNVLXJtldhBidc0OG4bhoS9n1sL0xggs82UgquNLjjPSBhX5AtUSqYB5uIDxMAWuUQOd5MI2Ez5phRMgHPzWGfiuVvLLXNADC8RWVgpSXlq3iati2t4mliw0YnTQUPCS5Cm5eYU/UM1+5JmQCRkuxii8J4L+Zn9T7ZjkW6SkO16uPuK2H46s5PmMXbVY0Q44LjSp9EdTZ+9CP75yaMPN+10mt3dXFhsD8ttpiDO2wpeNlKibzcfaaM6hwuLeloHrLlORC14yXEh74JCdAm6cRMvNpwnML8ZiiqjJU0HGHe+d9XsNTrScBzFwfmXckPKSNN7Jd1mK3dt8e4M4fox+PjfVHA+33bNohLoW/dKC0Fu4k6UbTI4aer4tT+1UVUa7ueg469XVMPRQkcXuuzZ56g59rneR0w7hHAGkmFUuXBUtH3WcE11bvZN3yaLe6i3F/XoMd9umZ1DuQvodq/M+K+TvCmCjz90ojjs1g4OZfwP2fvb02odhh+U5yxxU/WM9AJsQlnvTlHWB3kDNr7wXF66kSjadG50Ul7LwWjClNS17EzapfSSW8+E+mS6HKdmmE8FJleu4tk/P4PmcfyfA==",
+      "contentHash": "9b506af96e816373ae5fe8395ac8f7ec"
+    },
+    "jobs/tasks/team/onboarding.ts": {
+      "contents": "eJzdVlFP2zAQfu+vuOUpkdKUCe0lrIMJoomHoWmApm2akJtcW4Njdz4bGF3/+2Q7bRJggCYNactDlJy/u/vuO/sSXi+UNrAEjYSyghVMtaoh2htZwwWNgjnaGfA18B2aY8O0waqoGRetx+JiNkJnCncazdAMKUC7AU40Z6KQ1eMBjEMO0UHvBrhecM3l7IkxGnQ3zCcUparxsQBXAdb1LDUyg/uCozR9T7ILNmGEo3M16XpoV4RusRpZaYYhT1jroqmcY81OGF2kcMV4J4fRfDZDnVV4OaLqYnS53fObKyuqY5S3lD1XE2r6Wc6xvBgaZPVwIZjset9s8DfK6T3Aa79SKkkGlJwopqsTZDWMOwzj5QCAVzlEDcIHj9IBNKAcbjI1OcfSeCiAJdSHlTOTcT2Jk8xaXsWJ81n5e82uD6xmhiuZw/bWlrNpK3Ng9EOWEC+bILBKYPwGQtzAc90BGPfaFCc7gw5qCRUzLPdhUkCtlWvOGJiXex3DOwBkTpU4cliKkrWRULiaIl6lMLVCnElWYwq+pyk4Ec541cLxu4NGacO8DcPlTOCGHp9C7OkkTVUAZq7VFUi8gsIthOWsRiI2w2THo1at9wuXINswgp8/IZg8s/a1Yfj7PNEpofY6ASeoOTmqUT9hUPPrlGsyR75+wcLTNxhDn0lGC8FNHEGUwO4ufP3WlBw0D4MmK5U0rDSUhebFa3KefOhXKCRtFtrUjWFNYP1uJdkJlZpPsMphygRtlpitOMoS3W5caFUiUYbyMvtYHBdHB2dvTw8Oi6P94uzw4EVwWXXb1OyV/pmLe9q24vaKDJMlc8+bAgGMuq8+ALL+9OQQNRMLjIIvp6cfiiJqUW6P5hC9V3PiMpzjgIHXtbft3Vi7QMxKVb/p+M1NLfINPTeJ4s0a9GZkh6pPaIVwOue32px2UOE0h2vzuOpvoZDa3bKp0rE7mT8oh+2/K/afyvV4k96hATNHqJWbmtaAmt7t1sOq3/rEPq/wL1/+q8p/VlaD/967gbX+5AMpJZ8s/d1/i2dW/9V/oP6cEYS/tgdlv/UjGC9/Ky6sknt0BFilA/f6Cw69SKQ=",
+      "contentHash": "a91cd10a01664f5d32532d2cfdbdf81f"
+    },
+    "trigger.config.ts": {
+      "contents": "eJxljk9Lw0AQxe/5FOOeFEKSWjy4vShtKRFFKb2JlG13ErfdP2F3NhRLv7tssBXxMjP83rzHU6ZznuAIEhtlcepso1o4QeOdAfZAXrUt+kJiXwa5L/sxm2QZHgaTxEZETX+s18cMoPNuh1vi6dhiCAXavlgt68Vivly/LV+f5tPVup5d5RmAj5aUQQ7MOoksIe3aZ+xRc2DatQMy4jCLXpBylsN9VeVQljC6A6NsJAwpB8krDBxSAQC0YqNR1naGPYdG6ID5IPyUPv8N0Y9EaDoKHMb5mSq7UgZdpNq+BA6jqqryX8c/7SI2YkvOc7g9Ay+sdEZ9IQfy8afFKa1hbKLS8tL6QOit0BzeWfgUvmMfl0epfEi8KHduE0oSYR+SfLqZZN88gogR",
+      "contentHash": "c12e4952173df1327069029cb65379a3"
+    },
+    "tsconfig.json": {
+      "contents": "eJxlUEFuAyEMvPMKy0eUmHtO+UFPPUVRRcHdkrCAFrbaKtq/V5BlW6kny+PxjMcPAYC8FA424wnwnO6DKt+Js5lcKkcTw4cbVOCl3DLdcgx4qCsmjsl5nl5ScTHU1YcAAMB3nfl18lWLGhUAky6fvxQAPCuJJ7ggqTwZJfF62CfVf3Z9TopIJW3ueuBc8Y3f6GuX9/Pg2g2XTaYbAWDQI9djagLc4LXVKtIk0AXjZ8u7QCMfOXyRpZJ7igrS8x9/UCmV/N8uvae69Xyo6lQB0AIjL7svhmj5bYx29pzxKlbxAyIva9w=",
+      "contentHash": "e3c53cb332b6babcadf5c241dd246f01"
+    },
+    "package.json": {
+      "contents": "eJyNVMtu2zAQvPsrCB2DknrYrhsDBQq0/YP00oMAmlzbjClSISk1adB/L/iwRKeO0Zu0M1zuDmf3dYFQoWgHxRYVnNrjTlPDiw8+PIKxQiuPVKQidYy6lz6QO80HCTHWGzFS58PODBBClhnRO1ts0esCIYQKDqM/9vDz84+Hr0jBs0McRoR7tKyqGmHsBrPTPWWnkBOhYjcIyf2ZQI5/CbKOGjdB8S9Bj3pnQzPagRqRM+JwAOPvyhlbDr3UL544M0IkkaRQ8wXhJwO2e/F8ASKMfShRvETsCOwU0luGMFb6eydcsUDoT5CHQw+Kg2ICMo2+HLU+7bXpSgNWS/8APkW7nuT3pP50KKGjQnrslzYn21MG27sLgtSMuvR673N847cYdujpjlq4xRnETdQJad8jGKDM4dBLabweZjJbNZHONZTWBrityMdMjRlOH/gxitaQ1T1ZTTxHlXWUncp46dMA5iWJu2lIc5OHOYxOa2n/44CjOxn0aj+Rps550WeEw1haHrzRLsmS1JuM0rOSSQHRe21dkypvwcMWzBh1ugqfq8Fv23xDHgTXzpcyWPCumzSbpeXUAd6riKxITaY32RvagcGdPjusrRuyIctpRgYmOMQS0pOtNuv5vKJKC57ErMl6isNzanxNmjmdD2OhHBgVPE1lJHnxLjiW7gFTNlW1IXXWc6C4I3Rgz0Vl4PB0RYK5g/qeVHMDUVyuu3cxryn2o5wKWa9zhgXFk6zLOW6HHsyjTcU3JHPZb82TYZoVafI9Mn67vkrClrB+OWGm1V4cLoewvZhSv7Hixr5Kvrtq4mk//2Njn61Umsc5aKo3SK7qNSgTdvJi2OaYSZFGKxM8q8mDl8XMnZ1nlyyDfIs/i79utOmq",
+      "contentHash": "a4c304d3abf12ba9d36fd003fc27e006"
+    }
+  },
+  "externals": [
+    {
+      "name": "import-in-the-middle",
+      "version": "1.13.1"
+    }
+  ],
+  "config": {
+    "project": "proj_yzjcpjhghiibyqfxbvlg",
+    "dirs": [
+      "./jobs/tasks"
+    ]
+  },
+  "outputPath": "/Users/mohsin/Developer/zuupee/modern-monorepo/apps/dashboard/.trigger/tmp/build-aMOM7t",
+  "runWorkerEntryPoint": "/Users/mohsin/Developer/zuupee/modern-monorepo/apps/dashboard/.trigger/tmp/build-aMOM7t/node_modules/.pnpm/trigger.dev@3.3.17_typescript@5.7.3/node_modules/trigger.dev/dist/esm/entryPoints/dev-run-worker.mjs",
+  "indexWorkerEntryPoint": "/Users/mohsin/Developer/zuupee/modern-monorepo/apps/dashboard/.trigger/tmp/build-aMOM7t/node_modules/.pnpm/trigger.dev@3.3.17_typescript@5.7.3/node_modules/trigger.dev/dist/esm/entryPoints/dev-index-worker.mjs",
+  "configPath": "/Users/mohsin/Developer/zuupee/modern-monorepo/apps/dashboard/.trigger/tmp/build-aMOM7t/apps/dashboard/trigger.config.mjs",
+  "customConditions": [],
+  "deploy": {
+    "env": {}
+  },
+  "build": {},
+  "otelImportHook": {
+    "include": []
+  }
+}

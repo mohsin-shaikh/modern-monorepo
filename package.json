@@ -13,9 +13,17 @@
   "license": "MIT",
   "scripts": {
     "build": "turbo build",
-    "dev": "turbo dev",
+    "clean": "git clean -xdf node_modules",
+    "clean:workspaces": "turbo clean",
+    "dev": "turbo dev --parallel",
+    "test": "turbo test --parallel",
+    "start:dashboard": "turbo start --filter=dashboard",
+    "build:dashboard": "turbo build --filter=dashboard",
+    "dev:api": "turbo dev --filter=api",
+    "jobs:dashboard": "turbo jobs --filter=dashboard",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "typecheck": "turbo typecheck"
   },
   "devDependencies": {
     "@pkg/eslint-config": "workspace:*",

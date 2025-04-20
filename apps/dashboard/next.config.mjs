@@ -20,6 +20,19 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   devIndicators: false,
+  async headers() {
+    return [
+      {
+        source: "/((?!api/proxy).*)",
+        headers: [
+          {
+            key: "X-Frame-Options",
+            value: "DENY",
+          },
+        ],
+      },
+    ];
+  },
 }
 
 export default nextConfig

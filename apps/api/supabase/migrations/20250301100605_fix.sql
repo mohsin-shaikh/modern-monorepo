@@ -56,7 +56,7 @@ $$;
 -- =============================================================================
 
 -- Drop user_registered trigger
-DROP TRIGGER IF EXISTS user_registered ON auth.users;
+-- DROP TRIGGER IF EXISTS user_registered ON auth.users;
 
 
 -- =============================================================================
@@ -67,3 +67,14 @@ GRANT SELECT ON "private"."current_user_teams" TO "authenticated";
 GRANT SELECT ON "private"."current_user_teams" TO "service_role";
 
 GRANT USAGE ON SCHEMA private TO "anon", "authenticated", "service_role";
+
+-- =============================================================================
+-- Description: Add plan column to teams table
+-- =============================================================================
+
+-- Create enum type for plan
+create type team_plan as enum ('trial', 'pro', 'enterprise');
+
+-- Add plan column to teams table with default value
+alter table public.teams 
+    add column plan team_plan not null default 'trial';
