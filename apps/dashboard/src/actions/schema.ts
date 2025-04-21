@@ -58,3 +58,15 @@ export const changeTeamSchema = z.object({
     redirectTo: z.string(),
 });
 
+// ------------------------------------------------------------
+// MFA Schemas
+// ------------------------------------------------------------
+export const unenrollMfaSchema = z.object({
+    factorId: z.string(),
+});
+
+export const mfaVerifySchema = z.object({
+    factorId: z.string(),
+    challengeId: z.string(),
+    code: z.string(),
+});
