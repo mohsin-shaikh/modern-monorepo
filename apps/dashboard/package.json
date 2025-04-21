@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "jobs": "dotenv trigger dev",
-    "jobs:deploy": "trigger deploy",
+    "jobs:deploy": "dotenv trigger deploy",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "typecheck": "tsc --noEmit"
