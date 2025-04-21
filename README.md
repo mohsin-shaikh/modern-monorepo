@@ -6,43 +6,10 @@ A modern monorepo featuring a Next.js dashboard with Supabase authentication and
 
 ## Features
 
-- **Team Management**
-  - Create and manage multiple teams
-  - Team member roles (owner, member)
-  - Team invitations system
-  - Team switching capability
-  - Team settings and customization
-  - Team avatar and branding
-
-- **Authentication & Security**
-  - Supabase-powered authentication
-  - Multi-factor authentication (MFA)
-  - Email verification
-  - Password reset functionality
-  - Protected routes
-  - Session management
-
-- **Modern Tech Stack**
-  - Next.js for frontend and API routes
-  - TypeScript for type safety
-  - tRPC for type-safe API calls
-  - Supabase for backend services
-  - Shadcn UI components
-  - Tailwind CSS for styling
-
-- **Developer Experience**
-  - Monorepo architecture with pnpm
-  - Shared UI component library
-  - Shared TypeScript configurations
-  - Consistent ESLint rules
-  - Local Supabase development environment
-
-- **Infrastructure**
-  - Vercel deployment
-  - Supabase database and auth
-  - Background jobs with Trigger.dev
-  - Transactional emails via Resend
-  - CI/CD with Github Actions
+**Team Management**: Create and manage multiple teams with role-based access control, invitation system, and customizable team settings for enhanced collaboration.<br/>
+**Authentication**: Robust security with Supabase-powered authentication, including MFA, email verification, and protected routes for secure access.<br/>
+**Modern Stack**: Built with Next.js, TypeScript, tRPC, and Supabase, featuring Shadcn UI components and Tailwind CSS for a modern development experience.<br/>
+**Infrastructure**: Powered by Vercel deployment, Supabase backend, Trigger.dev for background jobs, and Resend for transactional emails.<br/>
 
 ## Get started
 
@@ -190,9 +157,9 @@ Shared configurations for ESLint and TypeScript ensure consistent code style and
 
 ## License
 
-This project is licensed under the AGPL-3.0 for non-commercial use.
+This project is licensed under the **[AGPL-3.0](https://opensource.org/licenses/AGPL-3.0)** for non-commercial use.
 
-Commercial Use
-For commercial use or deployments requiring a setup fee, please contact us for a commercial license at engineer@zuupee.com.
+### Commercial Use
+For commercial use or deployments requiring a setup fee, please contact us for a commercial license at [engineer@zuupee.com](mailto:engineer@zuupee.com).
 
 By using this software, you agree to the terms of the license.
