@@ -1,6 +1,84 @@
 # modern-monorepo
 
+## About Zuupee
+
 A modern monorepo featuring a Next.js dashboard with Supabase authentication and a local Supabase development environment.
+
+## Features
+
+- **Team Management**
+  - Create and manage multiple teams
+  - Team member roles (owner, member)
+  - Team invitations system
+  - Team switching capability
+  - Team settings and customization
+  - Team avatar and branding
+
+- **Authentication & Security**
+  - Supabase-powered authentication
+  - Multi-factor authentication (MFA)
+  - Email verification
+  - Password reset functionality
+  - Protected routes
+  - Session management
+
+- **Modern Tech Stack**
+  - Next.js for frontend and API routes
+  - TypeScript for type safety
+  - tRPC for type-safe API calls
+  - Supabase for backend services
+  - Shadcn UI components
+  - Tailwind CSS for styling
+
+- **Developer Experience**
+  - Monorepo architecture with pnpm
+  - Shared UI component library
+  - Shared TypeScript configurations
+  - Consistent ESLint rules
+  - Local Supabase development environment
+
+- **Infrastructure**
+  - Vercel deployment
+  - Supabase database and auth
+  - Background jobs with Trigger.dev
+  - Transactional emails via Resend
+  - CI/CD with Github Actions
+
+## Get started
+
+We are working on the documentation to get started with Zuupee for local development: https://docs.zuupee.com
+
+## App Architecture
+
+- Monorepo
+- Pnpm
+- React
+- TypeScript
+- Nextjs
+- Supabase
+- Shadcn
+<!-- - ToDesktop -->
+<!-- - Expo -->
+- TailwindCSS
+- tRPC
+
+### Hosting
+
+- Supabase (database, storage, realtime, auth)
+- Vercel (Website, edge-config, and metrics)
+<!-- - Upstash (redis) -->
+
+### Services
+
+- Trigger.dev (background jobs)
+- Resend (Transactional & Marketing)
+<!-- - Novu (notifications) -->
+- Github Actions (CI/CD)
+<!-- - OpenPanel (Events and Analytics) -->
+<!-- - Dub (Short URLs) -->
+<!-- - Polar (Payment processing) -->
+<!-- - Typesense (Search) -->
+
 
 ## Project Structure
 
@@ -99,14 +177,22 @@ Your `tailwind.config.ts` and `globals.css` are already set up to use the compon
 ## Shared Packages
 
 ### Supabase Package
+
 The `supabase` package provides shared Supabase client configuration and utilities for both the dashboard and API applications.
 
 ### Logger Package
+
 The `logger` package offers consistent logging utilities across all applications in the monorepo.
 
 ### ESLint and TypeScript Config
+
 Shared configurations for ESLint and TypeScript ensure consistent code style and type checking across all packages and applications.
 
 ## License
 
-This project is licensed under the GNU Affero General Public License v3.0 (AGPL-3.0) - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the AGPL-3.0 for non-commercial use.
+
+Commercial Use
+For commercial use or deployments requiring a setup fee, please contact us for a commercial license at engineer@zuupee.com.
+
+By using this software, you agree to the terms of the license.
