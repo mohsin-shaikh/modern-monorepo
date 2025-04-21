@@ -1,6 +1,51 @@
 # modern-monorepo
 
+## About Zuupee
+
 A modern monorepo featuring a Next.js dashboard with Supabase authentication and a local Supabase development environment.
+
+## Features
+
+**Team Management**: Create and manage multiple teams with role-based access control, invitation system, and customizable team settings for enhanced collaboration.<br/>
+**Authentication**: Robust security with Supabase-powered authentication, including MFA, email verification, and protected routes for secure access.<br/>
+**Modern Stack**: Built with Next.js, TypeScript, tRPC, and Supabase, featuring Shadcn UI components and Tailwind CSS for a modern development experience.<br/>
+**Infrastructure**: Powered by Vercel deployment, Supabase backend, Trigger.dev for background jobs, and Resend for transactional emails.<br/>
+
+## Get started
+
+We are working on the documentation to get started with Zuupee for local development: https://docs.zuupee.com
+
+## App Architecture
+
+- Monorepo
+- Pnpm
+- React
+- TypeScript
+- Nextjs
+- Supabase
+- Shadcn
+<!-- - ToDesktop -->
+<!-- - Expo -->
+- TailwindCSS
+- tRPC
+
+### Hosting
+
+- Supabase (database, storage, realtime, auth)
+- Vercel (Website, edge-config, and metrics)
+<!-- - Upstash (redis) -->
+
+### Services
+
+- Trigger.dev (background jobs)
+- Resend (Transactional & Marketing)
+<!-- - Novu (notifications) -->
+- Github Actions (CI/CD)
+<!-- - OpenPanel (Events and Analytics) -->
+<!-- - Dub (Short URLs) -->
+<!-- - Polar (Payment processing) -->
+<!-- - Typesense (Search) -->
+
 
 ## Project Structure
 
@@ -99,14 +144,22 @@ Your `tailwind.config.ts` and `globals.css` are already set up to use the compon
 ## Shared Packages
 
 ### Supabase Package
+
 The `supabase` package provides shared Supabase client configuration and utilities for both the dashboard and API applications.
 
 ### Logger Package
+
 The `logger` package offers consistent logging utilities across all applications in the monorepo.
 
 ### ESLint and TypeScript Config
+
 Shared configurations for ESLint and TypeScript ensure consistent code style and type checking across all packages and applications.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the **[AGPL-3.0](https://opensource.org/licenses/AGPL-3.0)** for non-commercial use.
+
+### Commercial Use
+For commercial use or deployments requiring a setup fee, please contact us for a commercial license at [engineer@zuupee.com](mailto:engineer@zuupee.com).
+
+By using this software, you agree to the terms of the license.
