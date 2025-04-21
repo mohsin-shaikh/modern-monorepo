@@ -7,7 +7,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         items={[
           { path: "/account", label: "General" },
           { path: "/account/date-and-locale", label: "Date & Locale" },
-        //   { path: "/account/security", label: "Security" },
+          { path: "/account/security", label: "Security" },
         //   { path: "/account/assistant", label: "Assistant" },
           { path: "/account/teams", label: "Teams" },
         //   { path: "/account/support", label: "Support" },
