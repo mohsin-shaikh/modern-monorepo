@@ -3,7 +3,13 @@
 import { mfaVerifyAction } from "@/actions/mfa-verify-action";
 import { createClient } from "@pkg/supabase/client";
 import { Button } from "@pkg/ui/components/button";
-import { Dialog, DialogContent } from "@pkg/ui/components/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@pkg/ui/components/dialog";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@pkg/ui/components/input-otp";
 import { useAction } from "next-safe-action/hooks";
 import Image from "next/image";
@@ -84,6 +90,14 @@ export function AddNewDeviceModal() {
         }}
       >
         <div className="p-6">
+          <DialogHeader>
+            <DialogTitle>Add New Device</DialogTitle>
+            <DialogDescription>
+              Use an authenticator app to scan the following QR code, and
+              provide the code to complete the setup.
+            </DialogDescription>
+          </DialogHeader>
+
           <div className="flex items-center justify-center mt-8">
             <div className="w-[190px] h-[190px] bg-white rounded-md">
               {qr && (
@@ -99,9 +113,8 @@ export function AddNewDeviceModal() {
           </div>
 
           <div className="my-8">
-            <p className="font-medium pb-1 text-2xl text-[#606060]">
-              Use an authenticator app to scan the following QR code, and
-              provide the code to complete the setup.
+            <p className="font-medium pb-1 text-md text-[#606060]">
+              Enter the 6-digit code from your authenticator app
             </p>
           </div>
 
