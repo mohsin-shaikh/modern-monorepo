@@ -6,7 +6,7 @@ import { WelcomeEmail } from "@pkg/email/emails/welcome";
 import { createClient } from "@pkg/supabase/job";
 import { render } from "@react-email/render";
 import { schemaTask, wait } from "@trigger.dev/sdk/v3";
-import { shouldSendEmail } from "jobs/utils/check-team-plan";
+import { shouldSendEmail } from "@/utils/check-team-plan";
 import { z } from "zod";
 
 export const onboardTeam = schemaTask({

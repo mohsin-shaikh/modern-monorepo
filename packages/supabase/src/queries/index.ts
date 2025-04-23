@@ -100,3 +100,27 @@ export async function getTeamMembersQuery(supabase: Client, teamId: string) {
     data,
   };
 }
+
+export async function getAvailablePlansQuery(supabase: Client, teamId: string) {
+  const [
+    teamMembersResponse, 
+    // bankConnectionsResponse
+  ] = await Promise.all([
+    supabase.from("users_on_team").select("id").eq("team_id", teamId),
+    // supabase.from("bank_connections").select("id").eq("team_id", teamId),
+  ]);
+
+  const teamMembersCount = teamMembersResponse.data?.length ?? 0;
+  // const bankConnectionsCount = bankConnectionsResponse.data?.length ?? 0;
+
+  // Can choose starter if team has 2 or fewer members and 2 or fewer bank connections
+  const starter = teamMembersCount <= 2 // && bankConnectionsCount <= 2;
+
+  // Can always choose pro plan
+  return {
+    data: {
+      starter,
+      pro: true,
+    },
+  };
+}

@@ -1,0 +1,35 @@
+{
+  "name": "@pkg/jobs",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "dotenv trigger dev",
+    "deploy": "dotenv trigger deploy"
+  },
+  "exports": {
+    "./tasks/team/onboarding": "./src/tasks/team/onboarding.ts",
+    "./tasks/team/delete": "./src/tasks/team/delete.ts",
+    "./tasks/team/invite": "./src/tasks/team/invite.ts",
+    "./tasks/user/setup": "./src/tasks/user/setup.ts"
+  },
+  "dependencies": {
+    "heic-convert": "1.2.4",
+    "pdf-to-img": "^4.4.0",
+    "@pkg/email": "workspace:*",
+    "@pkg/supabase": "workspace:*",
+    "@trigger.dev/sdk": "3.3.17",
+    "@fast-csv/format": "5.0.2",
+    "@zip.js/zip.js": "2.7.60",
+    "@react-email/render": "0.0.10",
+    "sharp": "^0.34.1",
+    "nanoid": "^5.1.5",
+    "resend": "^4.3.0",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@trigger.dev/build": "^3.3.17",
+    "@types/heic-convert": "2.1.0",
+    "trigger.dev": "3.3.17",
+    "dotenv-cli": "^8.0.0"
+  }
+}
