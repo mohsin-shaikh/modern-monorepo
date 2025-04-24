@@ -19,6 +19,7 @@ export type Database = {
           inbox_id: string | null
           logo_url: string | null
           name: string | null
+          plan: Database["public"]["Enums"]["team_plan"]
         }
         Insert: {
           created_at?: string
@@ -29,6 +30,7 @@ export type Database = {
           inbox_id?: string | null
           logo_url?: string | null
           name?: string | null
+          plan?: Database["public"]["Enums"]["team_plan"]
         }
         Update: {
           created_at?: string
@@ -39,6 +41,7 @@ export type Database = {
           inbox_id?: string | null
           logo_url?: string | null
           name?: string | null
+          plan?: Database["public"]["Enums"]["team_plan"]
         }
         Relationships: []
       }
@@ -259,6 +262,7 @@ export type Database = {
       connection_status: "disconnected" | "connected" | "unknown"
       inbox_type: "invoice" | "expense"
       reportTypes: "profit" | "revenue" | "burn_rate"
+      team_plan: "trial" | "pro" | "enterprise"
       teamRoles: "owner" | "member"
       trackerStatus: "in_progress" | "completed"
       transaction_frequency:
@@ -390,6 +394,7 @@ export const Constants = {
       connection_status: ["disconnected", "connected", "unknown"],
       inbox_type: ["invoice", "expense"],
       reportTypes: ["profit", "revenue", "burn_rate"],
+      team_plan: ["trial", "pro", "enterprise"],
       teamRoles: ["owner", "member"],
       trackerStatus: ["in_progress", "completed"],
       transaction_frequency: [
