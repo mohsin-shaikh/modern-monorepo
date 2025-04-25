@@ -8,10 +8,6 @@ export const POST = Webhooks({
   onPayload: async (payload) => {
     const supabase = await createClient({ admin: true });
 
-    console.log({
-      payload,
-    });
-
     switch (payload.type) {
       case "subscription.active": {
         await updateTeamPlan(supabase, {
@@ -35,7 +31,7 @@ export const POST = Webhooks({
         break;
       }
 
-      // Subscription has been revoked/peroid has ended with no renewal
+      // Subscription has been revoked/period has ended with no renewal
       case "subscription.revoked": {
         if (!payload.data.metadata.teamId) {
           console.error("Customer ID or email is missing");

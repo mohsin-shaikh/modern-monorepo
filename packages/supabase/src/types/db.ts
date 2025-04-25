@@ -11,6 +11,7 @@ export type Database = {
     Tables: {
       teams: {
         Row: {
+          canceled_at: string | null
           created_at: string
           email: string | null
           id: string
@@ -22,6 +23,7 @@ export type Database = {
           plan: Database["public"]["Enums"]["team_plan"]
         }
         Insert: {
+          canceled_at?: string | null
           created_at?: string
           email?: string | null
           id?: string
@@ -33,6 +35,7 @@ export type Database = {
           plan?: Database["public"]["Enums"]["team_plan"]
         }
         Update: {
+          canceled_at?: string | null
           created_at?: string
           email?: string | null
           id?: string
@@ -262,7 +265,7 @@ export type Database = {
       connection_status: "disconnected" | "connected" | "unknown"
       inbox_type: "invoice" | "expense"
       reportTypes: "profit" | "revenue" | "burn_rate"
-      team_plan: "trial" | "pro" | "enterprise"
+      team_plan: "trial" | "pro" | "starter"
       teamRoles: "owner" | "member"
       trackerStatus: "in_progress" | "completed"
       transaction_frequency:
@@ -394,7 +397,7 @@ export const Constants = {
       connection_status: ["disconnected", "connected", "unknown"],
       inbox_type: ["invoice", "expense"],
       reportTypes: ["profit", "revenue", "burn_rate"],
-      team_plan: ["trial", "pro", "enterprise"],
+      team_plan: ["trial", "pro", "starter"],
       teamRoles: ["owner", "member"],
       trackerStatus: ["in_progress", "completed"],
       transaction_frequency: [
