@@ -13,13 +13,9 @@
     "./tasks/user/setup": "./src/tasks/user/setup.ts"
   },
   "dependencies": {
-    "heic-convert": "1.2.4",
-    "pdf-to-img": "^4.4.0",
     "@pkg/email": "workspace:*",
     "@pkg/supabase": "workspace:*",
     "@trigger.dev/sdk": "3.3.17",
-    "@fast-csv/format": "5.0.2",
-    "@zip.js/zip.js": "2.7.60",
     "@react-email/render": "0.0.10",
     "sharp": "^0.34.1",
     "nanoid": "^5.1.5",
