@@ -12,15 +12,16 @@ import {
   updateTeamMember,
 } from "@pkg/supabase/mutations";
 import {
+  getAvailablePlansQuery,
   getTeamByIdQuery,
   getTeamInvitesQuery,
   getTeamMembersQuery,
   getTeamsByUserIdQuery,
 } from "@pkg/supabase/queries";
-// import { tasks } from "@trigger.dev/sdk/v3";
+import { tasks } from "@trigger.dev/sdk/v3";
 import { TRPCError } from "@trpc/server";
-// import type { deleteTeam as deleteTeamTask } from "jobs/tasks/team/delete";
-// import type { inviteTeamMembers } from "jobs/tasks/team/invite";
+// import type { deleteTeam as deleteTeamTask } from "@pkg/jobs/tasks/team/delete";
+import type { inviteTeamMembers } from "@pkg/jobs/tasks/team/invite";
 import { headers } from "next/headers";
 import { z } from "zod";
 
@@ -143,12 +144,12 @@ export const teamRouter = createTRPCRouter({
           message: "Team not found",
         });
       }
-      if (data.bank_connections.length > 0) {
-        // await tasks.trigger<typeof deleteTeamTask>("delete-team", {
-        //   teamId: input.teamId!,
-        //   connections: data.bank_connections,
-        // });
-      }
+      // if (data.bank_connections.length > 0) {
+      //   await tasks.trigger<typeof deleteTeamTask>("delete-team", {
+      //     teamId: input.teamId!,
+      //     connections: data.bank_connections,
+      //   });
+      // }
     }),
 
   deleteMember: protectedProcedure
@@ -199,7 +200,7 @@ export const teamRouter = createTRPCRouter({
         })),
       });
 
-      console.log({data, teamId});
+      console.log({ data, teamId });
 
       const invites =
         data?.map((invite) => ({
@@ -211,13 +212,13 @@ export const teamRouter = createTRPCRouter({
           inviteCode: invite.code!,
         })) ?? [];
 
-      // await tasks.trigger<typeof inviteTeamMembers>("invite-team-members", {
-      //   teamId: teamId!,
-      //   invites,
-      //   location,
-      //   ip,
-      //   locale: "en",
-      // });
+      await tasks.trigger<typeof inviteTeamMembers>("invite-team-members", {
+        teamId: teamId!,
+        invites,
+        location,
+        ip,
+        locale: "en",
+      });
     }),
 
   deleteInvite: protectedProcedure
@@ -228,4 +229,12 @@ export const teamRouter = createTRPCRouter({
         inviteId: input.inviteId,
       });
     }),
+
+  availablePlans: protectedProcedure.query(
+    async ({ ctx: { supabase, teamId } }) => {
+      const { data } = await getAvailablePlansQuery(supabase, teamId!);
+
+      return data;
+    },
+  ),
 });

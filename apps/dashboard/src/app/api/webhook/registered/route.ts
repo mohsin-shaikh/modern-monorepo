@@ -2,7 +2,7 @@ import * as crypto from "node:crypto";
 // import { LogEvents } from "@pkg/events/events";
 // import { setupAnalytics } from "@pkg/events/server";
 import { tasks } from "@trigger.dev/sdk/v3";
-import type { onboardTeam } from "jobs/tasks/team/onboarding";
+import type { onboardTeam } from "@pkg/jobs/tasks/team/onboarding";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 
