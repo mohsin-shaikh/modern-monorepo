@@ -43,7 +43,7 @@ We are working on the documentation to get started with Zuupee for local develop
 - Github Actions (CI/CD)
 <!-- - OpenPanel (Events and Analytics) -->
 <!-- - Dub (Short URLs) -->
-<!-- - Polar (Payment processing) -->
+- Polar (Payment processing)
 <!-- - Typesense (Search) -->
 
 
