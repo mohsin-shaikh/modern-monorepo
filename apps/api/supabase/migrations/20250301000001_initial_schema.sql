@@ -138,14 +138,66 @@ $$;
 
 ALTER FUNCTION "public"."generate_inbox"("size" integer) OWNER TO "postgres";
 
-CREATE OR REPLACE FUNCTION "public"."handle_new_user"() RETURNS "trigger"
-    LANGUAGE "plpgsql" SECURITY DEFINER
-    SET "search_path" TO 'public'
-    AS $$
-declare
-  new_team_id uuid;
-begin
-  -- insert into public.users
+-- CREATE OR REPLACE FUNCTION "public"."handle_new_user"() RETURNS "trigger"
+--     LANGUAGE "plpgsql" SECURITY DEFINER
+--     SET "search_path" TO 'public'
+--     AS $$
+-- declare
+--   new_team_id uuid;
+-- begin
+--   -- insert into public.users
+--   insert into public.users (
+--     id,
+--     full_name,
+--     avatar_url,
+--     email
+--   )
+--   values (
+--     new.id,
+--     new.raw_user_meta_data->>'full_name',
+--     new.raw_user_meta_data->>'avatar_url',
+--     new.email
+--   );
+
+--   -- insert into public.teams and return the new_team_id
+--   insert into public.teams (
+--     name,
+--     email,
+--     inbox_email
+--   )
+--   values (
+--     new.raw_user_meta_data->>'full_name',
+--     new.email,
+--     new.email
+--   )
+--   returning id into new_team_id; -- capture the team_id here
+
+--   -- insert into public.users_on_team using the captured team_id
+--   insert into public.users_on_team (
+--     user_id,
+--     team_id,
+--     role
+--   )
+--   values (
+--     new.id,
+--     new_team_id, -- use the captured team_id here
+--     'owner'
+--   );
+
+--   update public.users
+--   set team_id = new_team_id
+--   where id = new.id;
+
+--   return new;
+-- end;
+-- $$;
+
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+ RETURNS trigger
+ LANGUAGE plpgsql
+ SECURITY DEFINER
+ SET search_path TO 'public'
+AS $function$begin
   insert into public.users (
     id,
     full_name,
@@ -159,38 +211,8 @@ begin
     new.email
   );
 
-  -- insert into public.teams and return the new_team_id
-  insert into public.teams (
-    name,
-    email,
-    inbox_email
-  )
-  values (
-    new.raw_user_meta_data->>'full_name',
-    new.email,
-    new.email
-  )
-  returning id into new_team_id; -- capture the team_id here
-
-  -- insert into public.users_on_team using the captured team_id
-  insert into public.users_on_team (
-    user_id,
-    team_id,
-    role
-  )
-  values (
-    new.id,
-    new_team_id, -- use the captured team_id here
-    'owner'
-  );
-
-  update public.users
-  set team_id = new_team_id
-  where id = new.id;
-
   return new;
-end;
-$$;
+end;$function$;
 
 ALTER FUNCTION "public"."handle_new_user"() OWNER TO "postgres";
 
@@ -383,7 +405,9 @@ CREATE TABLE IF NOT EXISTS "public"."users" (
     "team_id" "uuid",
     "created_at" timestamp with time zone DEFAULT "now"(),
     "locale" "text" DEFAULT 'en'::"text",
-    "week_starts_on_monday" boolean DEFAULT false
+    "week_starts_on_monday" boolean DEFAULT false,
+    "timezone" "text",
+    "time_format" "numeric" DEFAULT '24'::"numeric"
 );
 
 ALTER TABLE "public"."users" OWNER TO "postgres";
@@ -421,6 +445,12 @@ ALTER TABLE ONLY "public"."user_invites"
 
 CREATE INDEX "users_on_team_team_id_idx" ON "public"."users_on_team" USING "btree" ("team_id");
 
+CREATE INDEX user_invites_team_id_idx ON public.user_invites USING btree (team_id);
+
+CREATE INDEX users_on_team_user_id_idx ON public.users_on_team USING btree (user_id);
+
+CREATE INDEX users_team_id_idx ON public.users USING btree (team_id);
+
 ALTER TABLE ONLY "public"."user_invites"
     ADD CONSTRAINT "public_user_invites_team_id_fkey" FOREIGN KEY ("team_id") REFERENCES "public"."teams"("id") ON DELETE CASCADE;
 
@@ -442,8 +472,6 @@ ALTER TABLE ONLY "public"."users"
 CREATE POLICY "Enable insert for authenticated users only" ON "public"."teams" FOR INSERT TO "authenticated" WITH CHECK (true);
 
 CREATE POLICY "Enable insert for authenticated users only" ON "public"."users_on_team" FOR INSERT TO "authenticated" WITH CHECK (true);
-
-CREATE POLICY "Enable read access for all users" ON "public"."users_on_team" FOR SELECT USING (true);
 
 CREATE POLICY "Enable select for users based on email" ON "public"."user_invites" FOR SELECT USING ((("auth"."jwt"() ->> 'email'::"text") = "email"));
 
