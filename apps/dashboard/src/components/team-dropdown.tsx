@@ -111,7 +111,7 @@ export function TeamDropdown() {
                   {sortedTeams[0]?.team?.name}
                 </span>
                 <span className='truncate text-xs'>
-                  {'Free Plan'}
+                  {(sortedTeams[0]?.team?.plan ?? '').charAt(0).toUpperCase() + (sortedTeams[0]?.team?.plan ?? '').slice(1) + ' Plan'}
                 </span>
               </div>
               <ChevronsUpDown className='ml-auto' />
